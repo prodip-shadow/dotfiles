@@ -91,7 +91,11 @@ alias art='php artisan'
 
 
 # Powerlevel10k
-source ~/powerlevel10k/powerlevel10k.zsh-theme
+if [[ -f /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme ]]; then
+  source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
+elif [[ -f ~/powerlevel10k/powerlevel10k.zsh-theme ]]; then
+  source ~/powerlevel10k/powerlevel10k.zsh-theme
+fi
 
 # Powerlevel10k configuration
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
@@ -112,11 +116,11 @@ export PATH="$PATH:$HOME/.dotnet/tools"
 
 export HYPRSHOT_DIR="$HOME/Pictures/Hyprshots"
 
-export GEMINI_API_KEY="XXX"
-export GOOGLE_APPLICATION_CREDENTIALS="$HOME/.keys/XXXX.json"
-export GOOGLE_CLOUD_PROJECT="XXXX"
+# export GEMINI_API_KEY="XXX"
+# export GOOGLE_APPLICATION_CREDENTIALS="$HOME/.keys/XXXX.json"
+# export GOOGLE_CLOUD_PROJECT="XXXX"
 # export GOOGLE_CLOUD_LOCATION="us-central1"
-export GOOGLE_CLOUD_LOCATION="global"
+# export GOOGLE_CLOUD_LOCATION="global"
 
 # Zsh Syntax Highlighting
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh

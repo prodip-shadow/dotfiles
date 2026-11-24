@@ -80,6 +80,7 @@ PACKAGES=(
     "zsh"
     "zsh-syntax-highlighting"
     "zsh-autosuggestions"
+    "zsh-theme-powerlevel10k"
     "zoxide"
     "atuin"
     "eza"
