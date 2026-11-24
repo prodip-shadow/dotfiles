@@ -1,0 +1,112 @@
+@import "colors.css";
+
+* {
+	all: unset;
+	/* font-family: 'Radio Canada Big', sans-serif; */
+	font-family: 'JetBrainsMono Nerd Font Propo', sans-serif;
+	font-weight: bold;
+	font-size: 16px;
+	/* border-radius: 30px; */
+	border-radius: 7px;
+}
+
+tooltip {
+	background-color: @background;
+	color: @fg;
+	padding: 20px;
+	border-radius: 7px;
+	border: 2px solid @background;
+}
+
+#waybar {
+	background: transparent;
+	margin-left: 0px;
+}
+
+#workspaces {
+	padding: 0;
+	background: @background;
+}
+
+#workspaces button:not(.taskbar-window) {
+	padding: 2px 10px 2px 10px;
+	color: @on_surface;
+}
+
+#workspaces button:not(.taskbar-window):hover {
+	background: @on_tertiary_container;
+	color: @tertiary_container;
+}
+
+#workspaces button.empty {
+	color: @surface_variant;
+}
+
+#workspaces button.active:not(.taskbar-window) {
+	background: @tertiary;
+	color: @background;
+}
+
+#workspaces button.focused:not(.taskbar-window) {
+	background: @tertiary;
+}
+
+#workspaces button.urgent:not(.taskbar-window) {
+	background: @error;
+	color: @on_error;
+}
+
+#workspaces button:not(.empty) .workspace-label {
+	margin-right: 6px;
+}
+
+#workspaces button.taskbar-window {
+	background: transparent;
+	padding: 0 3px;
+	margin: 0;
+	border-radius: 4px;
+}
+
+#workspaces button.taskbar-window:hover {
+	background: alpha(@on_surface, 0.15);
+}
+
+#workspaces button.taskbar-window.active {
+	background: alpha(@background, 0.2);
+}
+
+#window {
+	background-color: @background;
+	color: @tertiary;
+	padding: 0 7px 0 7px;
+}
+
+window#waybar.empty #window {
+	background-color: transparent;
+}
+
+
+#mpd,
+#idle_inhibitor,
+#pulseaudio,
+#wireplumber,
+#network,
+#cpu,
+#memory,
+#temperature,
+#backlight,
+#battery,
+#bluetooth,
+#tray,
+#clock {
+	background-color: @primary;
+	color: @on_primary;
+	padding: 0 15px 0 15px;
+	/* top, right, bottom, left */
+}
+
+#clock,
+#battery {
+	background-color: @secondary;
+	color: @on_secondary;
+}

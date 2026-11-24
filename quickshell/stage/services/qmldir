@@ -1,0 +1,2 @@
+module stage.services
+singleton WallpaperLayout 1.0 WallpaperLayout.qml

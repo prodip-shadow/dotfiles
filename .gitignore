@@ -1,0 +1,16 @@
+# Backups & OS clutter
+*.bak
+*.bak.*
+*.backup
+.backups/
+.directory
+.DS_Store
+Thumbs.db
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Secrets / local state
+.env
+*.local
