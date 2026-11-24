@@ -6,8 +6,8 @@ if pkill -x waybar 2>/dev/null || pkill -x ryoku-shell 2>/dev/null; then
     sleep 0.2
 fi
 
-export RYOKU_SHELL_DIR="/home/ashborn/.local/share/ryoku/shell"
-export PATH="/home/ashborn/.local/bin:/home/ashborn/.local/share/ryoku/shell/scripts:$PATH"
+export RYOKU_SHELL_DIR="$HOME/.local/share/ryoku/shell"
+export PATH="$HOME/.local/bin:$HOME/.local/share/ryoku/shell/scripts:$PATH"
 
 # Re-map the desktop week/cava quickshell overlay after ryoku-widgets maps
 # so Super+Shift+R reloads never bury the week name beneath ryoku-widgets.
@@ -23,4 +23,4 @@ export PATH="/home/ashborn/.local/bin:/home/ashborn/.local/share/ryoku/shell/scr
     nohup quickshell >/dev/null 2>&1 &
 ) &
 
-exec /home/ashborn/.local/bin/ryoku-shell daemon
+exec "$HOME/.local/bin/ryoku-shell" daemon

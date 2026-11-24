@@ -1,71 +1,177 @@
 #!/usr/bin/env bash
-# Ryoku-branded fastfetch. The emblem is rendered natively by fastfetch's
-# kitty-direct logo (image left, dossier right). fastfetch auto-enables "pipe
-# mode" when it thinks stdout isn't a real TTY, which SILENTLY disables image
-# logos and falls back to ASCII -- so in kitty and ghostty we force
-# `--pipe false` to keep the image. Outside those: chafa if present, else no logo.
-#
-# A Ryostore preset may hand drawing to its own renderer (for image formats
-# fastfetch cannot show, such as icat PNGs) with a comment in its config:
-#   // ryoku:renderer <product-id>/<relative-executable>
-# The renderer must stay inside ~/.local/share/ryoku/fastfetch/<product-id>/
-# and be executable; anything else falls through to fastfetch.
-#
-# Every branch execs instead of bounding the run with `timeout`: the shell
-# module walks the parent chain and skips known wrappers (`time`, `sudo`, ...)
-# but not `timeout`, so `timeout 8 fastfetch` reported the shell as "timeout"
-# in every greeting. A failed exec makes bash exit 127, which no longer masks
-# a missing fastfetch behind a false success.
-set -uo pipefail
+# Branded Fastfetch launcher for Ghostty / Zsh.
+# Reads logo configuration from ~/.config/fastfetch/logo-settings.jsonc
+# without hardcoding logo settings in config.jsonc.
 
-config_home="${XDG_CONFIG_HOME:-$HOME/.config}"
-config="$config_home/fastfetch/config.jsonc"
-data_home="${XDG_DATA_HOME:-$HOME/.local/share}"
+set -euo pipefail
 
-if [[ ! -v RYOKU_BASE_OS ]]; then
-  if command -v ryoku-base-os >/dev/null 2>&1; then
-    RYOKU_BASE_OS="$(ryoku-base-os)"
+if [[ -z "${RYOKU_BASE_OS:-}" ]]; then
+  if [[ -f /etc/os-release ]]; then
+    # shellcheck disable=SC1091
+    RYOKU_BASE_OS=$(. /etc/os-release && echo "${NAME:-Linux}")
   else
-    RYOKU_BASE_OS=Linux
+    RYOKU_BASE_OS="Linux"
   fi
   export RYOKU_BASE_OS
 fi
 
-if [[ -f "$config" ]]; then
-  renderer="$(
-    sed -n 's#^//[[:space:]]*ryoku:renderer[[:space:]][[:space:]]*##p' "$config" \
-      | head -n1
-  )"
+ff_dir="${XDG_CONFIG_HOME:-$HOME/.config}/fastfetch"
+cfg="$ff_dir/config.jsonc"
+logo_cfg="$ff_dir/logo-settings.jsonc"
 
-  case "$renderer" in
-    ""|/*|*..*|*[!A-Za-z0-9_./-]*)
-      ;;
-    *)
-      hook="$data_home/ryoku/fastfetch/$renderer"
-      if [[ -x "$hook" && -f "$hook" ]]; then
-        exec "$hook" "$@"
-      fi
-      ;;
-  esac
+effective="$cfg"
+if command -v ryoku-hub >/dev/null 2>&1; then
+  cache_cfg="${XDG_CACHE_HOME:-$HOME/.cache}/ryoku/fastfetch-effective.jsonc"
+  if ryoku-hub fastfetch effective >/dev/null 2>&1 && [[ -f "$cache_cfg" ]]; then
+    effective="$cache_cfg"
+  fi
 fi
 
-effective="$config"
-# The palette default (follow the wallpaper unless the user pinned a fixed
-# palette) is owned by `ryoku-hub fastfetch effective`, which copies the user's
-# config verbatim in fixed mode and rebuilds it tinted with the live Material
-# palette in wallpaper mode. Always run it; fall back to the raw config if the
-# backend is missing or errors, so a broken theme path never eats the readout.
-cache="${XDG_CACHE_HOME:-$HOME/.cache}/ryoku/fastfetch-effective.jsonc"
-if ryoku-hub fastfetch effective "$cache" 2>/dev/null; then
-  effective="$cache"
+args=(--config "$effective")
+
+if [[ -f "$logo_cfg" ]] && command -v python3 >/dev/null 2>&1; then
+  mapfile -d '' -t logo_args < <(python3 - "$logo_cfg" "${TERM:-}" "${TERM_PROGRAM:-}" <<'PY'
+import json, os, re, shutil, sys
+
+cfg_path, term, term_prog = sys.argv[1], sys.argv[2], sys.argv[3]
+
+with open(cfg_path, "r", encoding="utf-8") as f:
+    raw = f.read()
+
+# Strip // and /* */ comments while preserving string literals
+out_chars = []
+i, n = 0, len(raw)
+in_str = False
+while i < n:
+    ch = raw[i]
+    if in_str:
+        out_chars.append(ch)
+        if ch == '\\' and i + 1 < n:
+            out_chars.append(raw[i + 1])
+            i += 2
+            continue
+        if ch == '"':
+            in_str = False
+        i += 1
+    elif ch == '"':
+        in_str = True
+        out_chars.append(ch)
+        i += 1
+    elif ch == '/' and i + 1 < n and raw[i + 1] == '/':
+        i += 2
+        while i < n and raw[i] != '\n':
+            i += 1
+    elif ch == '/' and i + 1 < n and raw[i + 1] == '*':
+        i += 2
+        while i + 1 < n and not (raw[i] == '*' and raw[i + 1] == '/'):
+            i += 1
+        i += 2
+    else:
+        out_chars.append(ch)
+        i += 1
+clean = ''.join(out_chars)
+# Strip trailing commas before } or ]
+clean = re.sub(r',(\s*[}\]])', r'\1', clean)
+try:
+    data = json.loads(clean)
+except Exception as exc:
+    sys.stderr.write(f"ryoku-fastfetch: invalid logo-settings.jsonc ({exc}); using defaults\n")
+    sys.exit(0)
+
+out = []
+def add(*items):
+    out.extend(str(x) for x in items)
+
+mode = str(data.get("mode", "image")).lower()
+image_capable = (
+    "kitty" in term
+    or "ghostty" in term
+    or term_prog in ("ghostty", "kitty")
+)
+
+if mode == "pokemon":
+    import subprocess
+    poke_exe = shutil.which("pokemon-colorscripts")
+    if poke_exe:
+        poke_name = str(data.get("pokemonName", "random")).strip()
+        cmd = [poke_exe]
+        if not poke_name or poke_name == "random":
+            cmd.append("-r")
+        else:
+            cmd.extend(["-n", poke_name])
+        if data.get("pokemonNoTitle", True):
+            cmd.append("--no-title")
+        try:
+            proc = subprocess.run(cmd, capture_output=True, text=True, timeout=3, check=False)
+            if proc.returncode == 0 and proc.stdout:
+                add("--logo-type", "data-raw", "--logo", proc.stdout)
+            else:
+                add("--logo-type", "none")
+        except Exception:
+            add("--logo-type", "none")
+    else:
+        add("--logo-type", "none")
+elif mode == "ascii":
+    src = os.path.expanduser(str(data.get("asciiSource", "")))
+    if src and os.path.isfile(src):
+        add("--logo-type", data.get("asciiType", "file"), "--logo", src)
+    else:
+        add("--logo-type", "none")
+else:
+    src = os.path.expanduser(str(data.get("imageSource", "")))
+    proto = str(data.get("imageProtocol", "kitty-direct"))
+    # Ghostty kitty-direct only accepts PNG; use kitty-icat/kitty for JPG/WEBP
+    if proto == "kitty-direct" and src and not src.lower().endswith(".png"):
+        proto = "kitty-icat" if shutil.which("kitten") else "kitty"
+    if src and os.path.isfile(src):
+        if image_capable:
+            add("--pipe", "false", "--logo-type", proto, "--logo", src)
+        elif shutil.which("chafa"):
+            add("--logo-type", "chafa", "--logo", src)
+        else:
+            ascii_fallback = os.path.expanduser(str(data.get("asciiSource", "")))
+            if ascii_fallback and os.path.isfile(ascii_fallback):
+                add("--logo-type", data.get("asciiType", "file"), "--logo", ascii_fallback)
+            else:
+                add("--logo-type", "none")
+
+        width = data.get("width")
+        height = data.get("height")
+        preserve = bool(data.get("preserveAspectRatio", False))
+        scaling = str(data.get("scaling", "stretch")).lower()
+
+        if isinstance(width, int) and width > 0:
+            add("--logo-width", width)
+        if proto == "iterm":
+            add("--logo-preserve-aspect-ratio", "true" if preserve else "false")
+            if isinstance(height, int) and height > 0:
+                add("--logo-height", height)
+        else:
+            # For kitty-direct/kitty, omitting height when scaling in ('fit', 'auto') & preserve==True
+            # lets Ghostty scale proportionally from width.
+            if not (preserve and scaling in ("fit", "auto")) and isinstance(height, int) and height > 0:
+                add("--logo-height", height)
+    else:
+        add("--logo-type", "none")
+
+pad = data.get("padding", {})
+if isinstance(pad, dict):
+    for side in ("top", "right", "bottom", "left"):
+        val = pad.get(side)
+        if isinstance(val, int):
+            add(f"--logo-padding-{side}", val)
+
+pos = data.get("position")
+if pos in ("auto", "left", "top", "right"):
+    add("--logo-position", pos)
+
+if "printRemaining" in data and isinstance(data["printRemaining"], bool):
+    add("--logo-print-remaining", "true" if data["printRemaining"] else "false")
+
+sys.stdout.write("\0".join(out) + ("\0" if out else ""))
+PY
+  )
+  args+=("${logo_args[@]}")
 fi
 
-if [[ ! -f "$config" ]]; then
-  exec fastfetch "$@"
-elif [[ -n "${KITTY_WINDOW_ID:-}" || "${TERM:-}" == "xterm-kitty" || "${TERM:-}" == "xterm-ghostty" || "${TERM_PROGRAM:-}" == "ghostty" ]]; then
-  exec fastfetch --config "$effective" --pipe false "$@"
-elif command -v chafa >/dev/null 2>&1; then
-  exec fastfetch --config "$effective" --logo-type chafa "$@"
-else
-  exec fastfetch --config "$effective" --logo-type none "$@"
-fi
+exec fastfetch "${args[@]}" "$@"

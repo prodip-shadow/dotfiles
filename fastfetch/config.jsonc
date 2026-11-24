@@ -1,185 +1,45 @@
-// Load with --load-config examples/2.jsonc
-// Note that you must replace the image path to an existing image to display it.
-
 {
   "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
-  // "logo": {
-  //     "type": "iterm",
-  //     "source": "/Users/carter/Desktop/apple1.png",
-  //     "width": 28,
-  //     "height": 12
-  // },
   "display": {
-    "separator": " ",
+    // Editorial dossier, mirroring the website/Hub Profile: grouped sections
+    // under mono eyebrow headers, one vermillion accent. Keys are fixed truecolor
+    // (not palette slots) so they stay legible under any theme.
+    "color": { "keys": "38;2;226;52;42" },
+    "key": { "width": 9 },
+    "separator": "  ",
+    "percent": {
+      "type": 9,
+      "color": { "green": "38;2;127;191;106", "yellow": "38;2;217;164;65", "red": "38;2;226;52;42" }
+    }
   },
   "modules": [
-    {
-      "type": "host",
-      "key": "╭─󰌢",
-      "keyColor": "green",
-    },
-    {
-      "type": "cpu",
-      "key": "├─󰻠",
-      "keyColor": "green",
-    },
-    // {
-    //   "type": "gpu",
-    //   "key": "├─󰍛",
-    //   "keyColor": "green",
-    // },
-    // {
-    //   "type": "disk",
-    //   "key": "├─",
-    //   "keyColor": "green",
-    // },
-    // {
-    //   "type": "memory",
-    //   "key": "├─󰑭",
-    //   "keyColor": "green",
-    // },
-    // {
-    //   "type": "swap",
-    //   "key": "├─󰓡",
-    //   "keyColor": "green",
-    // },
-    {
-      "type": "display",
-      "key": "├─󰍹",
-      "keyColor": "green",
-    },
-    // {
-    //   "type": "brightness",
-    //   "key": "├─󰃞",
-    //   "keyColor": "green",
-    // },
-    {
-      "type": "battery",
-      "key": "├─",
-      "keyColor": "green",
-    },
-    {
-      "type": "poweradapter",
-      "key": "├─",
-      "keyColor": "green",
-    },
-    {
-      "type": "gamepad",
-      "key": "├─",
-      "keyColor": "green",
-    },
-    {
-      "type": "bluetooth",
-      "key": "├─",
-      "keyColor": "green",
-    },
-    {
-      "type": "sound",
-      "key": "╰─",
-      "keyColor": "green",
-    },
+    "break",
+    { "type": "title", "format": "\u001b[1;38;2;243;237;225m{user-name}\u001b[0m\u001b[38;2;143;135;112m @ \u001b[0m\u001b[1;38;2;243;237;225m{host-name}\u001b[0m" },
     "break",
 
-    {
-      "type": "shell",
-      "key": "╭─",
-      "keyColor": "yellow",
-    },
-    {
-      "type": "terminal",
-      "key": "├─",
-      "keyColor": "yellow",
-    },
-    {
-      "type": "terminalfont",
-      "key": "├─",
-      "keyColor": "yellow",
-    },
-    {
-      "type": "lm",
-      "key": "├─󰧨",
-      "keyColor": "yellow",
-    },
-    {
-      "type": "de",
-      "key": "├─",
-      "keyColor": "yellow",
-    },
-    {
-      "type": "wm",
-      "key": "├─",
-      "keyColor": "yellow",
-    },
-    {
-      "type": "theme",
-      "key": "├─󰉼",
-      "keyColor": "yellow",
-    },
-    {
-      "type": "icons",
-      "key": "╰─󰸉",
-      "keyColor": "yellow",
-    },
-    // {
-    //     "type": "wallpaper",
-    //     "key": "╰─󰸉",
-    //     "keyColor": "yellow"
-    // },
-
+    { "type": "custom", "format": "\u001b[38;2;226;52;42m\u2500\u2500\u001b[0m \u001b[1;38;2;243;237;225mVITALS\u001b[0m \u001b[38;2;58;46;36m\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u001b[0m" },
+    { "type": "cpu",    "key": "CPU" },
+    { "type": "gpu",    "key": "GPU", "detectionMethod": "pci" },
+    { "type": "memory", "key": "MEMORY" },
+    { "type": "disk",   "key": "DISK" },
     "break",
-    {
-      "type": "title",
-      "key": "╭─",
-      "format": "{1}@{2}",
-      "keyColor": "blue",
-    },
-    {
-      "type": "os",
-      "key": "├─󰣇", // Just get your distro's logo off nerdfonts.com
-      "keyColor": "blue",
-    },
-    {
-      "type": "kernel",
-      "key": "├─",
-      "format": "{1} {2}",
-      "keyColor": "blue",
-    },
-    {
-      "type": "packages",
-      "key": "├─󰏖",
-      "keyColor": "blue",
-    },
-    {
-      "type": "uptime",
-      "key": "├─󰅐",
-      "keyColor": "blue",
-    },
-    // {
-    //   "type": "media",
-    //   "key": "├─󰝚",
-    //   "keyColor": "blue",
-    // },
-    // {
-    //   "type": "localip",
-    //   "key": "├─󰩟",
-    //   "compact": true,
-    //   "keyColor": "blue",
-    // },
-    // {
-    //   "type": "publicip",
-    //   "key": "├─󰩠",
-    //   "keyColor": "blue",
-    // },
-    // {
-    //   "type": "wifi",
-    //   "key": "├─",
-    //   "format": "{4}", // ssid
-    //   "keyColor": "blue",
-    // },
-    {
-      "type": "locale",
-      "key": "╰─",
-      "keyColor": "blue",
-    },
-  ],
+
+    { "type": "custom", "format": "\u001b[38;2;226;52;42m\u2500\u2500\u001b[0m \u001b[1;38;2;243;237;225mSYSTEM\u001b[0m \u001b[38;2;58;46;36m\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u001b[0m" },
+    { "type": "os",      "key": "OS" },
+    { "type": "host",    "key": "HOST" },
+    { "type": "kernel",  "key": "KERNEL" },
+    { "type": "command", "key": "WM",     "text": "echo \"${XDG_CURRENT_DESKTOP:-Hyprland}\"" },
+    { "type": "command", "key": "SHELL",  "text": "basename \"${SHELL:-unknown}\"" },
+    { "type": "packages","key": "PKGS" },
+    "break",
+
+    { "type": "custom", "format": "\u001b[38;2;226;52;42m\u2500\u2500\u001b[0m \u001b[1;38;2;243;237;225mSESSION\u001b[0m \u001b[38;2;58;46;36m\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u001b[0m" },
+    { "type": "uptime",  "key": "UPTIME" },
+    { "type": "command", "key": "AGE", "text": "echo $(( ($(date +%s) - $(stat -c %W /)) / 86400 )) days" },
+    { "type": "terminal","key": "TERM" },
+    "break",
+
+    { "type": "colors", "symbol": "circle", "paddingLeft": 2 },
+    "break"
+  ]
 }

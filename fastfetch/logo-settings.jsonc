@@ -1,0 +1,55 @@
+{
+  // ============================================================================
+  // Fastfetch Logo Customization Settings
+  // Edit this file to customize your terminal logo without touching config.jsonc.
+  // ============================================================================
+
+  // Logo mode: "image" or "ascii"
+  "mode": "image",
+
+  // File paths for each mode (supports ~ and absolute paths)
+  "imageSource": "~/.config/fastfetch/logos/images/katana.png",
+  "asciiSource": "~/.config/fastfetch/logos/ascii/ryoku-icon.txt",
+
+  // Native Fastfetch logo types used for each mode:
+  // - imageProtocol: "kitty-direct" (recommended for Ghostty), "kitty", "sixel", "iterm", "chafa"
+  // - asciiType: "file" (supports $1-$9 color placeholders) or "file-raw" (prints file verbatim)
+  "imageProtocol": "kitty-direct",
+  "asciiType": "file",
+
+  // Dimensions in terminal character cells (NATIVE for image logos only; ignored by Fastfetch for ASCII files)
+  "width": 24,
+  "height": 8,
+
+  // Padding in character cells (NATIVE for both ASCII and image logos; negative top supported)
+  "padding": {
+    "top": 0,
+    "right": 4,
+    "bottom": 0,
+    "left": 9
+  },
+
+  // Alignment / position relative to modules (NATIVE: "left", "right", "top", "auto")
+  "position": "left",
+
+  // Aspect ratio & scaling behavior:
+  // - preserveAspectRatio: Native in Fastfetch ONLY for "iterm" protocol.
+  //   Workaround for kitty-direct/kitty: when true and scaling is "fit", height is omitted
+  //   so Ghostty scales proportionally from width.
+  // - scaling: "fit" (preserve ratio using width) or "stretch" (use both width and height).
+  "preserveAspectRatio": true,
+  "scaling": "fit",
+
+  // Background transparency:
+  // Fastfetch has no native transparency setting. Ghostty + kitty-direct automatically
+  // renders PNG/WebP alpha transparency over your terminal background.
+  "transparentBackground": true,
+
+  // Optional: Print remaining logo lines if logo is taller than the module list (NATIVE)
+  "printRemaining": true,
+  "horizontalAlignment": "left",
+  "verticalPosition": "top",
+  "aspectMode": "preserve",
+  "pokemonName": "random",
+  "pokemonNoTitle": true
+}

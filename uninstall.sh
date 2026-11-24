@@ -25,13 +25,18 @@ print_step "1/3" "Removing Desktop & Hyprland Symlinks"
 LN_DIRS=(
     "alacritty"
     "btop"
+    "cava"
     "fastfetch"
     "ghostty"
     "gtk-3.0"
+    "gtk-4.0"
     "hypr"
     "kitty"
     "matugen"
+    "qt6ct"
     "quickshell"
+    "rofi"
+    "ryoku"
     "swaync"
     "waybar"
     "wlogout"
@@ -55,6 +60,9 @@ if [[ -d "$BASE/local-bin" ]]; then
         unlink_config "$bin_file" "$HOME/.local/bin/$name" "local-bin-$name"
     done
 fi
+
+unlink_config "$BASE/local-share/ryoku" "$HOME/.local/share/ryoku" "local-share-ryoku"
+unlink_config "$BASE/local-share/ryogami" "$HOME/.local/share/ryogami" "local-share-ryogami"
 
 # --- 3. Optional Cleanup ---
 print_step "3/3" "Optional Cleanup"
