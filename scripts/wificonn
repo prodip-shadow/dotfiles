@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+# List available Wi-Fi networks
+echo "Available Wi-Fi networks:"
+sudo nmcli dev wifi list
+
+# Prompt for the network name
+read -p "Enter the network name (SSID): " network_name
+
+# Securely prompt for the password
+read -s -p "Enter the password for $network_name: " network_password
+echo
+
+# Connect to the Wi-Fi network
+sudo nmcli dev wifi connect "$network_name" password "$network_password"
+
+# Check if the connection was successful
+if [ $? -eq 0 ]; then
+    echo "Successfully connected to $network_name"
+else
+    echo "Failed to connect to $network_name. Please check the network name and password and try again."
+fi
+

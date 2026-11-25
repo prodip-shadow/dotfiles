@@ -1,0 +1,70 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+# usage: run [-r] <filename> ...filenames
+# example: run -r filename0 filename1 filename2
+# this converts to: clang++ -Wall -std=c++20 -o ./target/filename0 ./src/filename0.cpp ./src/filename1.cpp ./src/filename2.cpp 
+# at least one filename must be provided
+
+
+TRG="$PWD/target"
+SRC="$PWD/src"
+EXT="$PWD/external"
+
+# Check if src directory exists
+if [ ! -d "$SRC" ]; then
+	echo "src directory does not exist."
+	exit 1
+fi
+
+# Handle the Raylib Flag
+RAYLIB_FLAGS=""
+IMGUI_FLAGS=""
+RLIMGUI_SRC=""
+if [[ "${1:-}" == "-r" ]]; then
+    # Check if pkg-config can actually find raylib
+    if ! pkg-config --exists raylib; then
+        echo "Error: Raylib not found via pkg-config. Is it installed?"
+        exit 1
+    fi
+    RAYLIB_FLAGS=$(pkg-config --libs --cflags raylib)
+    shift # Remove -r from the arguments list
+
+    if [[ "${1:-}" == "-i" ]]; then
+	IMGUI_FLAGS="-I$EXT/imgui -limgui"
+	RLIMGUI_SRC="$EXT/imgui/rlImGui.cpp"
+	shift # Remove -i from the arguments list
+    fi
+fi
+
+# Check if any arguments are provided
+if [ "$#" -eq 0 ]; then
+	echo "No arguments provided. Please provide at least one filename."
+	echo "Usage: rcpp [-r] <filename_without_extension> ...filenames"
+	exit 1
+fi
+
+# Get the first argument
+filename=$1
+
+# Check if all the provided filenames exists in src directory
+files=()
+for arg in "$@"; do
+	if [ ! -f "$PWD/src/$arg.cpp" ]; then
+		echo "File $arg.cpp does not exist in src directory."
+		exit 1
+	else
+		files+=("$PWD/src/$arg.cpp")
+	fi
+done
+
+# Check if target directory exists
+mkdir -p "$TRG"
+
+# Compile the files
+echo "Compiling $filename..."
+clang++ -Wall -Wextra -std=c++20 -I"$SRC" -o "$TRG/$filename" "${files[@]}" $IMGUI_FLAGS $RLIMGUI_SRC $RAYLIB_FLAGS
+
+# Run the executable
+"$TRG/$filename"

@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+# Change directory to ~/Laravel
+cd ~/Laravel || exit
+
+# Check the number of arguments
+if [ $# -eq 1 ]; then
+    # If only one argument is provided, run 'laravel new $1'
+    laravel new "$1"
+    cd "$1"
+    git init .
+    git add .
+    git commit -m "Initial commit"
+
+elif [ $# -eq 2 ]; then
+    # If two arguments are provided, run 'composer create-project laravel/laravel=^$2 $1'
+    composer create-project "laravel/laravel=^$2" "$1"
+else
+    # If neither one nor two arguments are provided, display usage message
+    echo "Usage: $0 <project_name> [<laravel_version>]"
+    exit 1
+fi
+

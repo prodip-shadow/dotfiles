@@ -1,0 +1,70 @@
+#!/usr/bin/env bash
+
+export PATH="$HOME/.local/bin:$HOME/go/bin:/usr/local/bin:$PATH"
+
+WALL_DIR="$HOME/Wallpapers"
+TARGET_WALL="$WALL_DIR/wall.jpg"
+TARGET_BLUR="$WALL_DIR/wall_blur.jpg"
+
+SKIP_WALLPAPER=false
+AUTO_SCHEME=false
+DEFAULT_SCHEME="scheme-tonal-spot"
+
+# Parse arguments: -s (skip wallpaper prompt), -a (auto select default scheme)
+while getopts "sa" opt; do
+    case ${opt} in
+        s ) SKIP_WALLPAPER=true ;;
+        a ) AUTO_SCHEME=true ;;
+        \? ) echo "Usage: $0 [-s] [-a]" ; exit 1 ;;
+    esac
+done
+
+if [ "$SKIP_WALLPAPER" = false ]; then
+    cd "$WALL_DIR" || exit 1
+
+    # Stream file list directly to rofi using printf (fixes bash NUL-byte bug)
+    SELECTED=$(for file in *; do
+        if [[ "$file" =~ ^(pic\.jpg|wall\.jpg|wall_blur\.jpg)$ ]] || [ -d "$file" ]; then
+            continue
+        fi
+        if [[ "$file" =~ \.(jpg|jpeg|png|webp|fill)$ ]]; then
+            printf "%s\0icon\x1f%s/%s\n" "$file" "$WALL_DIR" "$file"
+        fi
+    done | rofi -dmenu -i -p "Select Wallpaper" \
+        -show-icons \
+        -theme-str 'window { width: 800px; } 
+                    listview { columns: 3; lines: 3; } 
+                    element { orientation: vertical; text-align: center; } 
+                    element-icon { size: 120px; }')
+
+    if [ -z "$SELECTED" ]; then
+        exit 0
+    fi
+
+    notify-send "Wallpaper" "Applying $SELECTED..."
+
+    cp "$SELECTED" "$TARGET_WALL"
+    magick "$SELECTED" -blur 0x25 -quality 95 "$TARGET_BLUR"
+
+    # Set Wallpaper (Hyprland)
+    hyprctl hyprpaper wallpaper "eDP-1, $TARGET_WALL"
+fi
+
+# Matugen Scheme Selection
+if [ "$AUTO_SCHEME" = true ]; then
+    SELECTED_SCHEME="$DEFAULT_SCHEME"
+else
+    SCHEMES="scheme-content\nscheme-expressive\nscheme-fidelity\nscheme-fruit-salad\nscheme-monochrome\nscheme-neutral\nscheme-rainbow\nscheme-tonal-spot\nscheme-vibrant"
+
+    SELECTED_SCHEME=$(echo -e "$SCHEMES" | rofi -dmenu -i -p "Select Color Scheme" \
+        -theme-str 'window { width: 400px; } listview { lines: 9; }')
+fi
+
+if [ -z "$SELECTED_SCHEME" ]; then
+    exit 0
+fi
+
+# Apply color scheme via Matugen
+kitty --class floating-matugen -e matugen image "$TARGET_WALL" -t "$SELECTED_SCHEME"
+
+notify-send "Theme" "Colors updated using $SELECTED_SCHEME."

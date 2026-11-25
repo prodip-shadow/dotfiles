@@ -66,7 +66,11 @@ alias git-init='git init && git add . && git commit -m "Initial commit"'
 alias sail='sh $([ -f sail ] && echo sail || echo vendor/bin/sail)'
 alias pbcopy='xsel --input --clipboard'
 alias pbpaste='xsel --output --clipboard'
-alias yay=paru
+if command -v paru &>/dev/null && ! command -v yay &>/dev/null; then
+  alias yay=paru
+elif command -v yay &>/dev/null && ! command -v paru &>/dev/null; then
+  alias paru=yay
+fi
 alias zshcfg='v ~/.zshrc'
 # alias npm=bun
 # alias npx=bunx

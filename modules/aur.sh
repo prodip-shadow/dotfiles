@@ -12,8 +12,13 @@ else
         mv "$HELPER" "${HELPER}.old.$(date +%s)"
     fi
 
-    git clone "https://aur.archlinux.org/${HELPER}.git"
-    cd "$HELPER" || exit 1
+    if git clone "https://aur.archlinux.org/${HELPER}-bin.git" "$HELPER" 2>/dev/null; then
+        cd "$HELPER" || exit 1
+    else
+        rm -rf "$HELPER"
+        git clone "https://aur.archlinux.org/${HELPER}.git" "$HELPER"
+        cd "$HELPER" || exit 1
+    fi
     makepkg -si --noconfirm
     cd "$BASE" || exit 1
 fi
@@ -24,4 +29,4 @@ else
     INSTALL_CMD="yay -S --noconfirm --needed --answerdiff None --answeredit None"
 fi
 
-export INSTALL_CMD
+export HELPER INSTALL_CMD

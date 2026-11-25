@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+# Check if ffmpeg is installed
+if ! command -v ffmpeg &> /dev/null; then
+    echo "ffmpeg is not installed. Please install it first."
+    exit 1
+fi
+
+# Directory where the mp3 files will be saved
+OUTPUT_DIR="./mp3"
+
+# Create the output directory if it doesn't exist
+mkdir -p "$OUTPUT_DIR"
+
+# Loop through all video files with .webm, .mkv, or .mp4 extensions
+for video_file in *.webm *.mkv *.mp4; do
+    # Check if the file exists to avoid error with no matching files
+    if [[ -f "$video_file" ]]; then
+        # Extract the base filename without extension
+        base_name=$(basename "$video_file" | sed 's/\.[^.]*$//')
+
+        # Define the output mp3 file path
+        output_file="$OUTPUT_DIR/${base_name}.mp3"
+
+        # Convert the video file to mp3
+        ffmpeg -i "$video_file" -q:a 0 -map a "$output_file"
+
+        # Notify the user of the conversion
+        echo "Converted $video_file to $output_file"
+    fi
+done
+
+echo "Batch conversion completed."

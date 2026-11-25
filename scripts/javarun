@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+# Get the first argument
+if [ -z "$1" ]; then
+    # Else show help
+    echo "Usage: javarun <filename>"
+    exit 1
+fi
+
+# Run: javac <filename>.java && java <filename>
+javac $1.java && java $1

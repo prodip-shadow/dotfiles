@@ -29,10 +29,11 @@ print_step "1/8" "AUR Helper & System Update"
 source "$BASE/modules/aur.sh"
 source "$BASE/modules/update.sh"
 
-# --- 2. Interactive Terminal & Browser Selection ---
-print_step "2/8" "Default Terminal & Browser Selection"
+# --- 2. Interactive Terminal, Browser & Editor Selection ---
+print_step "2/8" "Default Terminal, Browser & Editor Selection"
 source "$BASE/modules/terminal.sh"
 source "$BASE/modules/browser.sh"
+source "$BASE/modules/editor.sh"
 
 # --- 3. Core Hyprland Setup Packages ---
 print_step "3/8" "Installing Core Hyprland Packages"
@@ -78,6 +79,10 @@ PACKAGES=(
     "fzf"
     "psmisc"
     "libnotify"
+    "github-cli"
+    "yt-dlp"
+    "vlc"
+    "cmatrix"
 
     # Clipboard, Brightness, Media, Audio & Network
     "wl-clipboard"
@@ -114,6 +119,12 @@ PACKAGES=(
 
 log_info "Installing ${#PACKAGES[@]} core packages via ${HELPER}..."
 $INSTALL_CMD "${PACKAGES[@]}"
+
+# Optional / AUR extras (best-effort so missing AUR packages never abort install)
+log_info "Installing optional desktop & theme extras..."
+for extra_pkg in "pokemon-colorscripts-git" "localsend-bin" "antigravity-ide"; do
+    $INSTALL_CMD "$extra_pkg" 2>/dev/null || log_warn "Optional package skipped: $extra_pkg"
+done
 for old_fm in dolphin nautilus; do
     if pacman -Qi "$old_fm" &>/dev/null; then
         log_info "Removing old file manager ($old_fm)..."
@@ -177,6 +188,11 @@ if [[ -d "$BASE/local-bin" ]]; then
         chmod +x "$bin_file"
         link_config "$bin_file" "$HOME/.local/bin/$name" "local-bin-$name"
     done
+fi
+
+if [[ -d "$BASE/scripts" ]]; then
+    chmod +x "$BASE/scripts/"* 2>/dev/null || true
+    link_config "$BASE/scripts" "$HOME/.scripts" "scripts"
 fi
 
 # Enable essential system & user services

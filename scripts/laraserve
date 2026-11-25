@@ -1,0 +1,37 @@
+#!/bin/bash
+
+cd ~/Laravel || { echo "Error: Directory ~/Laravel not found"; exit 1; }
+
+# Check if an argument is provided
+if [ -z "$1" ]; then
+    cd $(ls | sort -d | fzf) || { echo "Error: No Laravel project found"; exit 1; }
+else
+    # Change directory to the specified Laravel project directory
+    cd ./"$1" || { echo "Error: Directory ~/Laravel/$1 not found"; exit 1; }
+fi
+
+# Check if vendor folder exists
+if [ ! -d "vendor" ]; then
+    composer install
+fi
+
+# Check if .env file exists
+if [ ! -f ".env" ]; then
+    cp .env.example .env
+    php artisan key:generate
+    php artisan migrate
+    php artisan db:seed
+    php artisan storage:link
+    php artisan cache:clear
+fi
+
+# Execute bun build command if node_modules folder and pacakge.json exists
+if [ -d "node_modules" ] && [ -f "package.json" ]; then
+    bun run build
+fi
+
+# Open [http://127.0.0.1:8000] in the default web browser
+# firefox-developer-edition http://127.0.0.1:8000
+
+# Run `php artisan serve`
+php artisan serve

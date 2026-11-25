@@ -1,0 +1,176 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+
+OCTANE=false
+REVERB=false
+PAIL=false
+QUIET=false
+
+
+while getopts "orpq" opt; do
+  case "$opt" in
+    o) OCTANE=true ;;
+    r) REVERB=true ;;
+    p) PAIL=true ;;
+    q) QUIET=true ;;
+    *) echo "Usage: $0 [-o] [-r] [-p] [-q] [project_name]" >&2; exit 1 ;;
+  esac
+done
+
+shift $((OPTIND - 1))
+
+
+ask_choice() {
+    local prompt="$1"
+    local default="$2" 
+    local choice
+
+    # Fast track if -q (quiet mode) is set
+    if [[ "$QUIET" == true ]]; then
+        choice="$default"
+    else
+        read -n 1 -p "$prompt " choice
+        echo "" 
+        choice="${choice:-$default}"
+    fi
+
+    if [[ "$choice" =~ ^[Yy]$ ]]; then
+        return 0 # True
+    else
+        return 1 # False
+    fi
+}
+
+check_and_install_dependencies() {
+    local missing_deps=()
+    
+    command -v kitty &>/dev/null || missing_deps+=("kitty")
+    command -v php &>/dev/null || missing_deps+=("php")
+    command -v composer &>/dev/null || missing_deps+=("composer")
+    command -v unzip &>/dev/null || missing_deps+=("unzip")
+    command -v curl &>/dev/null || missing_deps+=("curl")
+
+    if [ ${#missing_deps[@]} -eq 0 ]; then
+        return 0
+    fi
+
+    echo "Missing dependencies: ${missing_deps[*]}"
+    
+    if command -v pacman &>/dev/null; then
+        echo "Detected Arch-based system (pacman)."
+        sudo pacman -Sy --noconfirm "${missing_deps[@]}"
+    elif command -v apt-get &>/dev/null; then
+        echo "Detected Debian/Ubuntu-based system (apt)."
+        sudo apt-get update
+        sudo apt-get install -y "${missing_deps[@]}"
+    else
+        echo "Error: Supported package manager (pacman or apt) not found." >&2
+        echo "Please install ${missing_deps[*]} manually." >&2
+        exit 1
+    fi
+}
+
+# --- Dependency Management ---
+
+check_and_install_dependencies
+
+# --- Configuration ---
+
+BASE_DIR="$HOME/Laravel"
+PROJECT_NAME="${1:-}"
+
+
+if [[ -z "$PROJECT_NAME" ]]; then
+    echo "No project name provided. Using current directory: $PWD"
+    TARGET_DIR="$PWD"
+else
+    TARGET_DIR="$BASE_DIR/$PROJECT_NAME"
+fi
+
+if [[ ! -d "$TARGET_DIR" ]]; then
+    if ask_choice "Directory $TARGET_DIR does not exist. Create it? (y/N)" "N"; then
+        mkdir -p "$BASE_DIR" && cd "$BASE_DIR"
+        composer create-project laravel/laravel "$PROJECT_NAME"
+        cd "$PROJECT_NAME"
+        git init && git add . && git commit -m "Initial commit"
+        composer require laravel/jetstream
+        php artisan jetstream:install livewire
+        git add . && git commit -m "Installed Jetstream"
+    else
+        exit 0
+    fi
+fi
+
+cd "$TARGET_DIR"
+
+# Basic checks
+[[ ! -f "artisan" ]] && { echo "Error: artisan not found"; exit 1; }
+[[ ! -d "vendor" ]] && composer install
+
+
+RUN_SERVER=false
+RUN_DEV=false
+RUN_MAILPIT=false
+RUN_QUEUE=false
+
+if ask_choice "Run HTTP server? (Y/n)" "Y"; then
+    RUN_SERVER=true
+fi
+
+if [[ -f "package.json" ]]; then
+    PKG_MGR=$(command -v bun &> /dev/null && echo "bun" || echo "npm")
+    [[ ! -d "node_modules" ]] && $PKG_MGR install
+    
+    if ask_choice "Run $PKG_MGR dev? (Y/n)" "Y"; then
+        RUN_DEV=true
+    fi
+fi
+
+if ask_choice "Run Mailpit? (y/N)" "N"; then
+    RUN_MAILPIT=true
+fi
+
+if ask_choice "Run Queue Worker? (Y/n)" "Y"; then
+    RUN_QUEUE=true
+fi
+
+
+echo "Launching services..."
+
+if [ "$RUN_DEV" = true ]; then
+    echo "-> Starting frontend ($PKG_MGR)..."
+    kitty --hold "$PKG_MGR" run dev 2>/dev/null &
+fi
+
+if [ "$RUN_MAILPIT" = true ]; then
+    echo "-> Starting Mailpit..."
+    kitty --hold mailpit 2>/dev/null &
+fi
+
+if [ "$RUN_QUEUE" = true ]; then
+    echo "-> Starting Queue Worker..."
+    kitty --hold php artisan queue:work 2>/dev/null &
+fi
+
+if [ "$REVERB" = true ]; then
+    echo "-> Starting Laravel Reverb..."
+    kitty --hold php artisan reverb:start 2>/dev/null &
+fi
+
+if [ "$PAIL" = true ]; then
+    echo "-> Starting Laravel Pail..."
+    kitty --hold php artisan pail --timeout=0 2>/dev/null &
+fi
+
+if [ "$RUN_SERVER" = true ]; then
+    echo "---------------------------------------"
+    if [ "$OCTANE" = true ]; then
+        echo "Starting Laravel Octane Server..."
+        php artisan octane:start --port=8000 --workers=4 --max-requests=500
+    else
+        echo "Starting Laravel Development Server..."
+        php artisan serve
+    fi
+fi

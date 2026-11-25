@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+# Check if a file parameter is passed
+if [ -z "$1" ]; then
+    echo "Usage: $0 <file_with_urls>"
+    exit 1
+fi
+
+# Check if the file exists
+if [ ! -f "$1" ]; then
+    echo "File not found: $1"
+    exit 1
+fi
+
+# Read the file line by line
+while IFS= read -r url; do
+    # Check if the line is not empty
+    if [ -n "$url" ]; then
+        echo "Downloading $url"
+        yt-dlp "$url"
+    fi
+done < "$1"

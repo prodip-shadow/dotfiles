@@ -1,0 +1,70 @@
+#!/usr/bin/env bash
+
+confirm() {
+    read -p "$1 [Y/n] " response
+    case $response in
+        [Yy]|[Yy][Ee][Ss]|"")
+            return 0 ;;
+        [Nn]|[Nn][Oo])
+            return 1 ;;
+        *)
+            echo "Invalid input. Please enter Y or N."
+            confirm "$1" ;;
+    esac
+}
+
+if confirm "Do you want to check failed systemd services?"; then
+    echo "Failed systemd services:"
+    systemctl --failed
+fi
+
+if confirm "Do you want to view log files?"; then
+    echo "Log files:"
+    sudo journalctl -p 3 -xb
+fi
+
+if confirm "Do you want to update Pacman packages?"; then
+    echo "Updating Pacman packages:"
+    sudo pacman -Syu --noconfirm
+fi
+
+if confirm "Do you want to update Yay packages?"; then
+    echo "Updating Yay packages:"
+    yay
+fi
+
+if confirm "Do you want to clean Pacman cache?"; then
+    echo "Cleaning pacman cache:"
+    sudo pacman -Scc
+fi
+
+if confirm "Do you want to clean Yay cache?"; then
+    echo "Cleaning yay cache:"
+    yay -Scc
+fi
+
+if confirm "Do you want to delete unwanted dependencies?"; then
+    echo "Deleting unwanted dependencies:"
+    yay -Yc
+fi
+
+if confirm "Do you want to check for Orphan packages?"; then
+    echo "Checking for Orphan packages:"
+    pacman -Qtdq
+
+    if confirm "Do you want to remove Orphan packages?"; then
+        echo "Removing Orphan packages:"
+        sudo pacman -Rns $(pacman -Qtdq)
+    fi
+fi
+
+if confirm "Do you want to clean the cache directory?"; then
+    echo "Cleaning the Cache:"
+    rm -rf .cache/*
+fi
+
+if confirm "Do you want to clean the journal?"; then
+    echo "Cleaning the journal:"
+    sudo journalctl --vacuum-time=2weeks
+fi
+
