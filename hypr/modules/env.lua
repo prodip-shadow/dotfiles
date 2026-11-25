@@ -5,7 +5,6 @@
 hl.env("HYPRCURSOR_THEME", "miku-cursor-linux")
 hl.env("HYPRCURSOR_SIZE", "24")
 hl.env("XCURSOR_SIZE", "24")
-hl.env("HYPRCURSOR_SIZE", "24")
 
 ---- Toolkit settings
 hl.env("GDK_BACKEND", "wayland,x11,*")

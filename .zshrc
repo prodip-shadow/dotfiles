@@ -10,21 +10,6 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# Use powerline
-USE_POWERLINE="true"
-# Has weird character width
-# Example:
-#    is not a diamond
-HAS_WIDECHARS="false"
-# Source manjaro-zsh-configuration
-if [[ -e /usr/share/zsh/manjaro-zsh-config ]]; then
-  source /usr/share/zsh/manjaro-zsh-config
-fi
-# # Use manjaro zsh prompt
-# if [[ -e /usr/share/zsh/manjaro-zsh-prompt ]]; then
-#   source /usr/share/zsh/manjaro-zsh-prompt
-# fi
-
 # Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then
   export EDITOR='vim'
@@ -103,30 +88,22 @@ fi
 
 eval "$(zoxide init zsh)"
 eval "$(atuin init zsh)"
-#eval "$(phpenv init -)"
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 
-# composer, rofui, scripts
+# composer, rofi, scripts
 export PATH="$HOME/.config/composer/vendor/bin:$HOME/.config/rofi/bin:$HOME/.scripts:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$PATH:$HOME/.dotnet/tools"
 
 export HYPRSHOT_DIR="$HOME/Pictures/Hyprshots"
 
-# export GEMINI_API_KEY="XXX"
-# export GOOGLE_APPLICATION_CREDENTIALS="$HOME/.keys/XXXX.json"
-# export GOOGLE_CLOUD_PROJECT="XXXX"
-# export GOOGLE_CLOUD_LOCATION="us-central1"
-# export GOOGLE_CLOUD_LOCATION="global"
-
 # Zsh Syntax Highlighting
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # Zsh Autosuggestions
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-export PATH="$HOME/.config/composer/vendor/bin:$PATH"
 
 # Lazy-load NVM so terminal startup stays instant
 export NVM_DIR="$HOME/.nvm"

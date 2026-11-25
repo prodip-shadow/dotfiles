@@ -147,7 +147,6 @@ LN_DIRS=(
     "kitty"
     "matugen"
     "qt6ct"
-    "qutebrowser"
     "rofi"
     "swaync"
     "waybar"
@@ -179,7 +178,6 @@ link_config "$BASE/.zshrc" "$HOME/.zshrc" ".zshrc"
 link_config "$BASE/.p10k.zsh" "$HOME/.p10k.zsh" ".p10k.zsh"
 link_config "$BASE/.gitconfig" "$HOME/.gitconfig" ".gitconfig"
 link_config "$BASE/.tmux.conf" "$HOME/.tmux.conf" ".tmux.conf"
-link_config "$BASE/.profile" "$HOME/.profile" ".profile"
 
 if [[ -d "$BASE/local-bin" ]]; then
     for bin_file in "$BASE/local-bin/"*; do

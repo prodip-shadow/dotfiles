@@ -34,7 +34,6 @@ LN_DIRS=(
     "kitty"
     "matugen"
     "qt6ct"
-    "qutebrowser"
     "rofi"
     "swaync"
     "waybar"
@@ -51,7 +50,6 @@ unlink_config "$BASE/.zshrc" "$HOME/.zshrc" ".zshrc"
 unlink_config "$BASE/.p10k.zsh" "$HOME/.p10k.zsh" ".p10k.zsh"
 unlink_config "$BASE/.gitconfig" "$HOME/.gitconfig" ".gitconfig"
 unlink_config "$BASE/.tmux.conf" "$HOME/.tmux.conf" ".tmux.conf"
-unlink_config "$BASE/.profile" "$HOME/.profile" ".profile"
 
 if [[ -d "$BASE/local-bin" ]]; then
     for bin_file in "$BASE/local-bin/"*; do
@@ -59,6 +57,10 @@ if [[ -d "$BASE/local-bin" ]]; then
         name="$(basename "$bin_file")"
         unlink_config "$bin_file" "$HOME/.local/bin/$name" "local-bin-$name"
     done
+fi
+
+if [[ -d "$BASE/scripts" ]]; then
+    unlink_config "$BASE/scripts" "$HOME/.scripts" "scripts"
 fi
 
 # --- 3. Optional Cleanup ---
