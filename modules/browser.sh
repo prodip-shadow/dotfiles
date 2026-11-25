@@ -6,6 +6,9 @@ BROWSER_CHOICE=$(get_selection "Select Browser to Install" \
     "Google Chrome" \
     "Firefox" \
     "Zen Browser" \
+    "Chromium" \
+    "Vivaldi" \
+    "Qutebrowser" \
     "Skip")
 
 case "$BROWSER_CHOICE" in
@@ -40,6 +43,30 @@ case "$BROWSER_CHOICE" in
             sed -i 's/^browser = .*/browser = "zen-browser"/' "$BASE/hypr/modules/programs.lua"
         fi
         log_success "Zen Browser installed and set as default Hyprland browser."
+        ;;
+    "Chromium")
+        log_info "Installing Chromium..."
+        $INSTALL_CMD chromium
+        if [[ -f "$BASE/hypr/modules/programs.lua" ]]; then
+            sed -i 's/^browser = .*/browser = "chromium"/' "$BASE/hypr/modules/programs.lua"
+        fi
+        log_success "Chromium installed and set as default Hyprland browser."
+        ;;
+    "Vivaldi")
+        log_info "Installing Vivaldi..."
+        $INSTALL_CMD vivaldi
+        if [[ -f "$BASE/hypr/modules/programs.lua" ]]; then
+            sed -i 's/^browser = .*/browser = "vivaldi-stable"/' "$BASE/hypr/modules/programs.lua"
+        fi
+        log_success "Vivaldi installed and set as default Hyprland browser."
+        ;;
+    "Qutebrowser")
+        log_info "Installing Qutebrowser..."
+        $INSTALL_CMD qutebrowser
+        if [[ -f "$BASE/hypr/modules/programs.lua" ]]; then
+            sed -i 's/^browser = .*/browser = "qutebrowser"/' "$BASE/hypr/modules/programs.lua"
+        fi
+        log_success "Qutebrowser installed and set as default Hyprland browser."
         ;;
     *)
         log_warn "Skipped browser installation."

@@ -27,7 +27,7 @@ bindings = [
 ]
 
 [general]
-import = [ "~/.config/alacritty/aura.toml" ]
+import = [ "~/.config/alacritty/matugen.toml" ]
 
 [terminal]
 

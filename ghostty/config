@@ -1,2 +1,5 @@
 font-family = "MesloLGS Nerd Font"
 confirm-close-surface = false
+theme = matugen
+gtk-single-instance = true
+quit-after-last-window-closed = false

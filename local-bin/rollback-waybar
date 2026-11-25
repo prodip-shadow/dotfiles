@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Rollback from Ryoku Python bar back to Waybar
-pkill -x ryoku-shell 2>/dev/null || true
-sleep 0.2
-
-exec /home/ashborn/.config/waybar/scripts/launch.sh
+# Relaunch Waybar and desktop daemons
+exec "${XDG_CONFIG_HOME:-$HOME/.config}/waybar/scripts/launch.sh"

@@ -1,112 +1,235 @@
 @import "colors.css";
 
+@keyframes pulse-critical {
+    0%   { background-color: @error; color: @on_error; }
+    50%  { background-color: @surface_variant; color: @error; }
+    100% { background-color: @error; color: @on_error; }
+}
+
 * {
-	all: unset;
-	/* font-family: 'Radio Canada Big', sans-serif; */
-	font-family: 'JetBrainsMono Nerd Font Propo', sans-serif;
-	font-weight: bold;
-	font-size: 16px;
-	/* border-radius: 30px; */
-	border-radius: 7px;
+    font-family: "JetBrainsMono Nerd Font Propo", "FiraCode Nerd Font", sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    min-height: 0;
+}
+
+window#waybar {
+    background: transparent;
+    color: @on_surface;
+}
+
+/* Solid matte floating islands */
+.modules-left {
+    background: transparent;
+    border: none;
+    padding: 0;
+}
+
+#workspaces-island,
+#window,
+.modules-center,
+.modules-right {
+    background-color: @background;
+    border: 1px solid @surface_variant;
+    border-radius: 14px;
+    padding: 3px 6px;
 }
 
 tooltip {
-	background-color: @background;
-	color: @fg;
-	padding: 20px;
-	border-radius: 7px;
-	border: 2px solid @background;
+    background-color: @background;
+    color: @on_surface;
+    border-radius: 10px;
+    border: 1px solid @surface_variant;
+    padding: 10px 14px;
 }
 
-#waybar {
-	background: transparent;
-	margin-left: 0px;
+tooltip label {
+    color: @on_surface;
 }
 
+/* Launcher icon */
+#custom-launcher {
+    background-color: @surface;
+    color: @primary;
+    font-size: 20px;
+    padding: 2px 12px;
+    margin: 2px 2px 2px 2px;
+    border-radius: 10px;
+    transition: all 0.22s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+#custom-launcher:hover {
+    background-color: @primary;
+    color: @on_primary;
+}
+
+#custom-divider {
+    background: transparent;
+    color: @surface_variant;
+    font-size: 16px;
+    font-weight: 300;
+    margin: 0 5px;
+    padding: 0;
+}
+
+/* Workspaces: solid active capsule + inline app icons */
 #workspaces {
-	padding: 0;
-	background: @background;
+    padding: 0 2px;
 }
 
-#workspaces button:not(.taskbar-window) {
-	padding: 2px 10px 2px 10px;
-	color: @on_surface;
+#workspaces button {
+    background-color: transparent;
+    color: @on_surface_variant;
+    border: none;
+    border-radius: 10px;
+    padding: 3px 9px;
+    margin: 2px;
+    transition: all 0.24s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-#workspaces button:not(.taskbar-window):hover {
-	background: @on_tertiary_container;
-	color: @tertiary_container;
+#workspaces button:hover {
+    background-color: @surface_variant;
+    color: @on_surface;
 }
 
 #workspaces button.empty {
-	color: @surface_variant;
+    color: @surface_variant;
 }
 
-#workspaces button.active:not(.taskbar-window) {
-	background: @tertiary;
-	color: @background;
+#workspaces button.active,
+#workspaces button.focused {
+    background-color: @primary;
+    color: @on_primary;
+    padding: 3px 13px;
+    font-weight: 700;
 }
 
-#workspaces button.focused:not(.taskbar-window) {
-	background: @tertiary;
-}
-
-#workspaces button.urgent:not(.taskbar-window) {
-	background: @error;
-	color: @on_error;
+#workspaces button.urgent {
+    background-color: @error;
+    color: @on_error;
 }
 
 #workspaces button:not(.empty) .workspace-label {
-	margin-right: 6px;
+    margin-right: 5px;
 }
 
 #workspaces button.taskbar-window {
-	background: transparent;
-	padding: 0 3px;
-	margin: 0;
-	border-radius: 4px;
+    background-color: transparent;
+    padding: 0 3px;
+    margin: 0 1px;
+    border-radius: 6px;
+    transition: background-color 0.18s ease;
 }
 
 #workspaces button.taskbar-window:hover {
-	background: alpha(@on_surface, 0.15);
+    background-color: @surface_variant;
 }
 
 #workspaces button.taskbar-window.active {
-	background: alpha(@background, 0.2);
+    background-color: @background;
 }
 
+/* Window Title */
 #window {
-	background-color: @background;
-	color: @tertiary;
-	padding: 0 7px 0 7px;
+    color: @on_surface_variant;
+    padding: 3px 12px;
+    margin-left: 8px;
+    font-weight: 500;
 }
 
 window#waybar.empty #window {
-	background-color: transparent;
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
 }
 
+/* Center Clock */
+#clock {
+    color: @on_surface;
+    font-weight: 700;
+    padding: 4px 14px;
+    margin: 2px;
+    border-radius: 10px;
+    transition: all 0.22s cubic-bezier(0.25, 1, 0.5, 1);
+}
 
-#mpd,
-#idle_inhibitor,
-#pulseaudio,
-#wireplumber,
-#network,
+#clock:hover {
+    background-color: @surface_variant;
+    color: @primary;
+}
+
+/* Right Island Modules */
+#tray,
 #cpu,
 #memory,
-#temperature,
 #backlight,
-#battery,
+#wireplumber,
 #bluetooth,
-#tray,
-#clock {
-	background-color: @primary;
-	color: @on_primary;
-	padding: 0 15px 0 15px;
-	/* top, right, bottom, left */
+#network,
+#battery,
+#custom-notification {
+    color: @on_surface;
+    padding: 4px 9px;
+    margin: 2px 1px;
+    border-radius: 10px;
+    transition: all 0.22s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-#clock,
-#battery {
-	background-color: @secondary;
-	color: @on_secondary;
+#cpu,
+#memory {
+    color: @on_surface_variant;
+}
+
+#backlight:hover,
+#wireplumber:hover,
+#bluetooth:hover,
+#network:hover,
+#battery:hover,
+#custom-notification:hover {
+    background-color: @surface_variant;
+    color: @primary;
+}
+
+#custom-notification.notification {
+    color: @primary;
+}
+
+#custom-notification.dnd-none,
+#custom-notification.dnd-notification {
+    color: @on_surface_variant;
+}
+
+#wireplumber.muted,
+#network.disconnected {
+    color: @error;
+}
+
+#battery.charging,
+#battery.plugged {
+    color: @primary;
+}
+
+#battery.warning:not(.charging) {
+    color: @secondary;
+}
+
+#battery.critical:not(.charging) {
+    animation: pulse-critical 1.4s ease-in-out infinite;
+}
+
+/* Power button */
+#custom-power {
+    background-color: @surface;
+    color: @error;
+    font-size: 14px;
+    padding: 4px 11px;
+    margin: 2px 2px 2px 4px;
+    border-radius: 10px;
+    transition: all 0.22s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+#custom-power:hover {
+    background-color: @error;
+    color: @on_error;
 }

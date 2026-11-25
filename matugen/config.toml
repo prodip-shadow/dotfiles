@@ -27,11 +27,35 @@ output_path = "~/.config/swaync/themes/nova-dark/notifications.css"
 [templates.ghostty]
 input_path = "~/.config/matugen/templates/ghostty.tera"
 output_path = "~/.config/ghostty/themes/matugen"
+post_hook = "pidof ghostty >/dev/null && pkill -SIGUSR2 ghostty || true"
+
+[templates.kitty]
+input_path = "~/.config/matugen/templates/kitty.tera"
+output_path = "~/.config/kitty/matugen.conf"
+post_hook = "pidof kitty >/dev/null && pkill -SIGUSR1 kitty || true"
+
+[templates.alacritty]
+input_path = "~/.config/matugen/templates/alacritty.tera"
+output_path = "~/.config/alacritty/matugen.toml"
+
+[templates.rofi]
+input_path = "~/.config/matugen/templates/rofi.tera"
+output_path = "~/.config/rofi/matugen-colors.rasi"
 
 [templates.gtk4]
 input_path = "~/.config/matugen/templates/gtk4.css.tera"
 output_path = "~/.config/gtk-4.0/colors.css"
 post_hook = "~/.config/matugen/reload-gtk.sh"
+
+[templates.gtk3]
+input_path = "~/.config/matugen/templates/gtk4.css.tera"
+output_path = "~/.config/gtk-3.0/colors.css"
+post_hook = "~/.config/matugen/reload-gtk.sh"
+
+[templates.thunar_folders]
+input_path = "~/.config/matugen/templates/folder-colors.env.tera"
+output_path = "~/.config/matugen/folder-colors.env"
+post_hook = "~/.config/matugen/recolor-folders.sh"
 
 [templates.hyprlock]
 input_path = "~/.config/matugen/templates/hyprlock.conf.tera"

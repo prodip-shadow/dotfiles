@@ -63,3 +63,14 @@ hl.window_rule({
 	center = true,
 	size = { 600, 400 },
 })
+
+hl.window_rule({
+	name = "thunar-floating",
+	match = {
+		class = "^([Tt]hunar)$",
+	},
+	float = true,
+	center = true,
+	size = { 960, 620 },
+	opacity = "0.92 0.86",
+})

@@ -1,7 +1,19 @@
 #!/usr/bin/env bash
 
 # Interactive default terminal selection
-TERMINAL_CHOICE=$(get_selection "Select Default Terminal" "ghostty" "kitty" "alacritty")
+TERMINAL_CHOICE=$(get_selection "Select Default Terminal" \
+    "kitty" \
+    "ghostty" \
+    "alacritty" \
+    "wezterm" \
+    "foot" \
+    "tilix" \
+    "Skip")
+
+if [[ "$TERMINAL_CHOICE" == "Skip" ]]; then
+    log_warn "Skipped terminal installation."
+    return 0 2>/dev/null || exit 0
+fi
 
 log_info "Installing $TERMINAL_CHOICE..."
 $INSTALL_CMD "$TERMINAL_CHOICE"

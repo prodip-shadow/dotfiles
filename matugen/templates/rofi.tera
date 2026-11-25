@@ -1,0 +1,10 @@
+* {
+    bg:         {{colors.background.default.hex}}ff;
+    bg-alt:     {{colors.surface.default.hex}}ff;
+    bg-sel:     {{colors.primary_container.default.hex}}ff;
+    fg:         {{colors.on_surface.default.hex}}ff;
+    fg-dim:     {{colors.on_surface_variant.default.hex}}ff;
+    accent:     {{colors.primary.default.hex}}ff;
+    on-accent:  {{colors.on_primary.default.hex}}ff;
+    border-col: {{colors.surface_variant.default.hex}}ff;
+}

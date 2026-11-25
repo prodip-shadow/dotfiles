@@ -23,5 +23,3 @@ hl.env("QT_AUTO_SCREEN_SCALE_FACTOR", "1")
 hl.env("QT_QPA_PLATFORMTHEME", "qt6ct")
 hl.env("QT_WAYLAND_DISABLE_WINDOWDECORATION", "1")
 
-hl.env("QML_IMPORT_PATH", "/home/ashborn/.local/lib/qt6/qml:/home/ashborn/.config/quickshell")
-hl.env("QML2_IMPORT_PATH", "/home/ashborn/.local/lib/qt6/qml:/home/ashborn/.config/quickshell")

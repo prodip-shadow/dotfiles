@@ -1,1 +1,56 @@
 @import 'colors.css';
+
+/* Thunar Matugen Dark Styling */
+window.thunar,
+window.thunar paned,
+window.thunar box {
+    background-color: @window_bg_color;
+    color: @window_fg_color;
+}
+
+window.thunar menubar,
+window.thunar toolbar {
+    background-color: @headerbar_bg_color;
+    color: @headerbar_fg_color;
+    border-bottom: 1px solid alpha(@window_fg_color, 0.08);
+    padding: 3px 6px;
+}
+
+window.thunar .sidebar,
+window.thunar .sidebar .view,
+window.thunar .shortcuts-pane {
+    background-color: @sidebar_bg_color;
+    color: @sidebar_fg_color;
+}
+
+window.thunar .standard-view,
+window.thunar .standard-view .view,
+window.thunar iconview,
+window.thunar treeview,
+window.thunar scrolledwindow,
+window.thunar viewport {
+    background-color: @view_bg_color;
+    color: @view_fg_color;
+}
+
+window.thunar .sidebar .view:selected,
+window.thunar .standard-view .view:selected,
+window.thunar iconview:selected,
+window.thunar treeview:selected {
+    background-color: @accent_bg_color;
+    color: @accent_fg_color;
+    border-radius: 8px;
+}
+
+window.thunar entry {
+    background-color: alpha(@window_fg_color, 0.06);
+    color: @window_fg_color;
+    border: 1px solid alpha(@window_fg_color, 0.14);
+    border-radius: 8px;
+}
+
+window.thunar statusbar {
+    background-color: @window_bg_color;
+    color: alpha(@window_fg_color, 0.75);
+    border-top: 1px solid alpha(@window_fg_color, 0.08);
+}

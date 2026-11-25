@@ -34,13 +34,11 @@ LN_DIRS=(
     "kitty"
     "matugen"
     "qt6ct"
-    "quickshell"
+    "qutebrowser"
     "rofi"
-    "ryoku"
     "swaync"
     "waybar"
     "wlogout"
-    "wofi"
 )
 
 for dir in "${LN_DIRS[@]}"; do
@@ -50,6 +48,8 @@ done
 # --- 2. Unlink Home Dotfiles & Local Scripts ---
 print_step "2/3" "Removing Shell Dotfiles & Local Script Symlinks"
 unlink_config "$BASE/.zshrc" "$HOME/.zshrc" ".zshrc"
+unlink_config "$BASE/.p10k.zsh" "$HOME/.p10k.zsh" ".p10k.zsh"
+unlink_config "$BASE/.gitconfig" "$HOME/.gitconfig" ".gitconfig"
 unlink_config "$BASE/.tmux.conf" "$HOME/.tmux.conf" ".tmux.conf"
 unlink_config "$BASE/.profile" "$HOME/.profile" ".profile"
 
@@ -60,9 +60,6 @@ if [[ -d "$BASE/local-bin" ]]; then
         unlink_config "$bin_file" "$HOME/.local/bin/$name" "local-bin-$name"
     done
 fi
-
-unlink_config "$BASE/local-share/ryoku" "$HOME/.local/share/ryoku" "local-share-ryoku"
-unlink_config "$BASE/local-share/ryogami" "$HOME/.local/share/ryogami" "local-share-ryogami"
 
 # --- 3. Optional Cleanup ---
 print_step "3/3" "Optional Cleanup"

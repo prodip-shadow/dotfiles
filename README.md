@@ -5,7 +5,7 @@ Minimal, modular Arch Linux + Hyprland dotfiles built around the current desktop
 ## What's Included
 
 - **Window Manager**: `hypr/` (Lua-modularized Hyprland config, `hyprlock`, `hypridle`, `hyprpaper`, `hermes` IPC, clipboard script)
-- **Status Bar & Shell UI**: `waybar/`, `quickshell/`, `swaync/`, `wlogout/`, `wofi/`
+- **Status Bar & Shell UI**: `waybar/`, `swaync/`, `wlogout/`
 - **Theming**: `matugen/`, `gtk-3.0/`, `wallpapers/`, `fonts/`
 - **Terminal & CLI**: `ghostty/`, `kitty/`, `alacritty/`, `fastfetch/`, `btop/`, `.zshrc`, `.tmux.conf`, `.profile`
 - **Installer**: `install.sh` + `modules/` (AUR helper choice, core Hyprland dependencies, interactive **Brave** or **Firefox** browser selection, automatic backup to `~/.dotfiles_backup`)

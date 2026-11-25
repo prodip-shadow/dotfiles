@@ -1,19 +1,13 @@
+@import "matugen-colors.rasi"
+
 configuration {
     show-icons: false;
-    font: "FiraCode Nerd Font 11";
+    font: "JetBrainsMono Nerd Font 10";
     disable-history: true;
     sort: false;
 }
 
 * {
-    bg:          #101418ee;
-    bg-alt:      #1a2028ff;
-    bg-sel:      #24303dff;
-    fg:          #e0e2e8ff;
-    fg-dim:      #8b949eff;
-    accent:      #9dcbfcff;
-    border-col:  #9dcbfc66;
-
     background-color: transparent;
     text-color: @fg;
     margin: 0px;
@@ -22,23 +16,25 @@ configuration {
 }
 
 window {
-    width: 720px;
+    width: 780px;
     background-color: @bg;
     border: 2px solid;
-    border-color: @border-col;
-    border-radius: 14px;
-    padding: 14px;
+    border-color: @accent;
+    border-radius: 16px;
+    padding: 18px;
     location: center;
     anchor: center;
 }
 
 mainbox {
-    spacing: 10px;
+    spacing: 12px;
     children: [ "inputbar", "message", "listview" ];
 }
 
 inputbar {
     background-color: @bg-alt;
+    border: 1px solid;
+    border-color: @border-col;
     border-radius: 10px;
     padding: 10px 14px;
     spacing: 10px;
@@ -47,59 +43,70 @@ inputbar {
 
 prompt {
     text-color: @accent;
-    font: "FiraCode Nerd Font Bold 11";
+    font: "JetBrainsMono Nerd Font Bold 11";
 }
 
 entry {
-    placeholder: "Search clipboard...";
+    placeholder: "Search clipboard history...";
     placeholder-color: @fg-dim;
     text-color: @fg;
+    vertical-align: 0.5;
 }
 
 message {
     background-color: @bg-alt;
-    border-radius: 8px;
-    padding: 7px 12px;
+    border: 1px solid;
+    border-color: @border-col;
+    border-radius: 10px;
+    padding: 8px 14px;
 }
 
 textbox {
     text-color: @fg-dim;
     horizontal-align: 0.5;
+    vertical-align: 0.5;
+    font: "JetBrainsMono Nerd Font 9";
 }
 
 listview {
-    lines: 10;
+    lines: 9;
     columns: 1;
     fixed-height: false;
     scrollbar: true;
-    spacing: 4px;
+    spacing: 6px;
     margin: 2px 0px 0px 0px;
 }
 
 scrollbar {
     width: 4px;
     handle-width: 4px;
-    handle-color: @border-col;
+    handle-color: @accent;
     border-radius: 4px;
-    margin: 0px 0px 0px 6px;
+    margin: 0px 0px 0px 8px;
 }
 
-element {
-    padding: 9px 12px;
-    border-radius: 8px;
-    background-color: transparent;
+element,
+element normal.normal,
+element alternate.normal {
+    padding: 10px 14px;
+    border-radius: 10px;
+    background-color: @bg-alt;
+    border: 1px solid;
+    border-color: transparent;
     text-color: @fg;
 }
 
-element selected.normal {
+element selected.normal,
+element selected.active {
     background-color: @bg-sel;
     text-color: @accent;
-    border: 1px solid;
-    border-color: @border-col;
+    border: 2px solid;
+    border-color: @accent;
 }
 
 element-text {
     background-color: transparent;
     text-color: inherit;
     vertical-align: 0.5;
+    font: "JetBrainsMono Nerd Font 10";
 }

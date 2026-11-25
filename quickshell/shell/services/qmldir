@@ -1,2 +1,0 @@
-module shell.services
-singleton Perf 1.0 Perf.qml

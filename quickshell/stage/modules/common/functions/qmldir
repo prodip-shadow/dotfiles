@@ -1,2 +1,0 @@
-module stage.modules.common.functions
-singleton WallpaperFraming 1.0 WallpaperFraming.qml

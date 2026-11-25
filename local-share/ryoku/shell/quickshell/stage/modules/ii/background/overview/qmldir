@@ -1,3 +1,0 @@
-module stage.modules.ii.background.overview
-EdgeFadeMask 1.0 EdgeFadeMask.qml
-ProgressiveBlur 1.0 ProgressiveBlur.qml

@@ -59,7 +59,7 @@ alias ssys="sudo systemctl"
 alias p='sudo pacman'
 alias install="sudo pacman -S"
 alias remove="sudo pacman -Rns"
-alias update="sudo pacman -Syu && sudo freshclam"
+alias update="sudo pacman -Syu"
 alias fman="compgen -c | fzf | xargs man"
 alias mysql=mariadb
 alias git-init='git init && git add . && git commit -m "Initial commit"'
@@ -71,12 +71,7 @@ alias zshcfg='v ~/.zshrc'
 # alias npm=bun
 # alias npx=bunx
 alias py=python
-
-
-# Custom Alias
-alias yay='paru'
 alias c='clear'
-alias art='php artisan'
 
 
 
@@ -129,16 +124,22 @@ source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zs
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 export PATH="$HOME/.config/composer/vendor/bin:$PATH"
 
+# Lazy-load NVM so terminal startup stays instant
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-# Hermes Agent command
-case ":$PATH:" in *":$HOME/.local/bin:"*) ;; *) export PATH="$HOME/.local/bin:$PATH" ;; esac
-
+_lazy_nvm() {
+  unset -f nvm node npm npx
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+}
+if [[ -d "$NVM_DIR" ]]; then
+  nvm()  { _lazy_nvm; nvm "$@"; }
+  node() { _lazy_nvm; node "$@"; }
+  npm()  { _lazy_nvm; npm "$@"; }
+  npx()  { _lazy_nvm; npx "$@"; }
+fi
 
 # Added by Antigravity CLI installer
-export PATH="/home/ashborn/.local/bin:$PATH"
+case ":$PATH:" in *":$HOME/.local/bin:"*) ;; *) export PATH="$HOME/.local/bin:$PATH" ;; esac
 
 # Ryoku Fastfetch alias
 alias fastfetch="$HOME/.config/fastfetch/ryoku-fastfetch"

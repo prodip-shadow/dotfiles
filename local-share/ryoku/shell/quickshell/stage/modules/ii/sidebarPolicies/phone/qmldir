@@ -1,2 +1,0 @@
-module stage.modules.ii.sidebarPolicies.phone
-singleton AndroidIconMask 1.0 AndroidIconMask.qml
