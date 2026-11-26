@@ -43,6 +43,7 @@ PACKAGES=(
     "hyprlock"
     "hypridle"
     "hyprpaper"
+    "swaybg"
     "hyprshot"
     "imagemagick"
     "hyprpolkitagent"

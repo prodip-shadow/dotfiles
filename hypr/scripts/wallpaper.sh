@@ -7,6 +7,34 @@ WP_DIR="${HOME}/Wallpapers"
 HYPRPAPER_CONF="${HOME}/.config/hypr/hyprpaper.conf"
 ROFI_THEME="${HOME}/.config/rofi/wallpaper.rasi"
 
+apply_wallpaper() {
+    local img="$1"
+    pkill -x swaybg 2>/dev/null || true
+    pkill -x hyprpaper 2>/dev/null || true
+    for _ in $(seq 1 20); do
+        pgrep -x swaybg >/dev/null 2>&1 || pgrep -x hyprpaper >/dev/null 2>&1 || break
+        sleep 0.05
+    done
+    if command -v swaybg >/dev/null 2>&1; then
+        setsid -f swaybg -i "$img" -m fill >/dev/null 2>&1
+    elif command -v hyprpaper >/dev/null 2>&1; then
+        setsid -f hyprpaper >/dev/null 2>&1
+    fi
+}
+
+if [[ "${1:-}" == "--restore" ]]; then
+    wp=""
+    if [[ -f "$HYPRPAPER_CONF" ]]; then
+        wp=$(grep -E '^\s*(path|wallpaper)\s*=' "$HYPRPAPER_CONF" | head -n1 | sed -E 's/^\s*(path|wallpaper)\s*=\s*([^,]*,\s*)?//' | xargs || true)
+        wp="${wp/#\~/$HOME}"
+    fi
+    if [[ -z "$wp" || ! -f "$wp" ]]; then
+        wp="${WP_DIR}/wall.jpg"
+    fi
+    [[ -f "$wp" ]] && apply_wallpaper "$wp"
+    exit 0
+fi
+
 if [[ ! -d "$WP_DIR" ]]; then
     notify-send "Wallpaper" "Directory not found: $WP_DIR" 2>/dev/null || true
     exit 1
@@ -90,13 +118,8 @@ wallpaper {
 }
 EOF
 
-# 2. Restart hyprpaper cleanly with the new config
-pkill -x hyprpaper 2>/dev/null || true
-for _ in $(seq 1 20); do
-    pgrep -x hyprpaper >/dev/null 2>&1 || break
-    sleep 0.05
-done
-setsid -f hyprpaper >/dev/null 2>&1
+# 2. Apply wallpaper cleanly (swaybg avoids hyprpaper EGL/GBM crashes in VMs)
+apply_wallpaper "$SELECTED"
 
 # 3. Generate full system theme (Waybar, Rofi, Ghostty, Kitty, Alacritty, Hyprland, SwayNC, GTK4, Wlogout, Hyprlock)
 if command -v matugen >/dev/null 2>&1; then
