@@ -47,15 +47,17 @@ if [[ ${#WALLPAPERS[@]} -eq 0 ]]; then
     exit 1
 fi
 
-# Detect current wallpaper (live from hyprpaper first, fallback to hyprpaper.conf)
+# Detect current wallpaper (live from hyprpaper if running, fallback to hyprpaper.conf)
 CURRENT_WP=""
-if command -v hyprctl >/dev/null 2>&1; then
+if pgrep -x hyprpaper >/dev/null 2>&1 && command -v hyprctl >/dev/null 2>&1; then
     CURRENT_WP=$(hyprctl hyprpaper listactive 2>/dev/null | head -n1 | sed -E 's/^[^=]*=\s*//' | xargs || true)
+    CURRENT_WP="${CURRENT_WP/#\~/$HOME}"
+    [[ -f "$CURRENT_WP" ]] || CURRENT_WP=""
 fi
 if [[ -z "$CURRENT_WP" && -f "$HYPRPAPER_CONF" ]]; then
     CURRENT_WP=$(grep -E '^\s*(path|wallpaper)\s*=' "$HYPRPAPER_CONF" | head -n1 | sed -E 's/^\s*(path|wallpaper)\s*=\s*([^,]*,\s*)?//' | xargs || true)
+    CURRENT_WP="${CURRENT_WP/#\~/$HOME}"
 fi
-CURRENT_WP="${CURRENT_WP/#\~/$HOME}"
 
 ROFI_ARGS=(-dmenu -i -p "󰸉 Wallpaper" -show-icons -theme "$ROFI_THEME")
 ACTIVE_IDX=-1
