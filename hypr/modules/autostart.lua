@@ -11,6 +11,7 @@ hl.on("hyprland.start", function()
 	hl.exec_cmd("sh -c 'command -v ghostty >/dev/null && ghostty --gtk-single-instance=true --initial-window=false'")
 	hl.exec_cmd("~/.config/waybar/scripts/wifi-menu.py --daemon")
 	hl.exec_cmd("~/.config/waybar/scripts/bluetooth-menu.py --daemon")
+	hl.exec_cmd("~/.config/waybar/scripts/keybinds-menu.py --daemon")
 	hl.exec_cmd("swaync")
 	hl.exec_cmd("~/.config/hypr/scripts/wallpaper.sh --restore")
 

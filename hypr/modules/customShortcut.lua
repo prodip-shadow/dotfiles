@@ -1,5 +1,5 @@
--- Custom keyboard shortcut overrides (auto-managed by Waybar Keybinds menu)
--- Format: ["ORIGINAL_KEY_FROM_BINDS_LUA"] = "NEW_KEY"
+-- Custom keyboard shortcuts & overrides (auto-managed by Waybar Keybinds menu)
 return {
-    ["ORIGINAL_KEY_FROM_BINDS_LUA"] = "NEW_KEY",
+    overrides = {},
+    custom_binds = {},
 }

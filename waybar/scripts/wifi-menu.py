@@ -1,13 +1,33 @@
 #!/usr/bin/env python3
 """Native GTK4 Layer-Shell Wi-Fi Dropdown Panel for Waybar."""
 
+import os
+import signal
+import sys
+
+PID_FILE = "/tmp/waybar-wifi-panel.pid"
+OTHER_PID_FILES = ("/tmp/waybar-bt-panel.pid", "/tmp/waybar-keybinds-panel.pid")
+
+# Fast-path toggle before importing GTK4/LayerShell (~10ms response)
+if "--daemon" not in sys.argv and os.path.exists(PID_FILE):
+    try:
+        for _op in OTHER_PID_FILES:
+            if os.path.exists(_op):
+                try:
+                    with open(_op) as _f:
+                        os.kill(int(_f.read().strip()), signal.SIGUSR1)
+                except Exception:
+                    pass
+        with open(PID_FILE) as _f:
+            os.kill(int(_f.read().strip()), signal.SIGUSR2)
+        sys.exit(0)
+    except Exception:
+        pass
+
 import ctypes
 ctypes.CDLL("libgtk4-layer-shell.so", mode=ctypes.RTLD_GLOBAL)
 
-import os
-import signal
 import subprocess
-import sys
 import threading
 import gi
 
@@ -15,7 +35,6 @@ gi.require_version("Gtk", "4.0")
 gi.require_version("Gtk4LayerShell", "1.0")
 from gi.repository import Gdk, Gio, GLib, Gtk, Gtk4LayerShell
 
-PID_FILE = "/tmp/waybar-wifi-panel.pid"
 OTHER_PID_FILE = "/tmp/waybar-bt-panel.pid"
 
 COLORS_CSS = os.path.expanduser("~/.config/waybar/colors.css")
