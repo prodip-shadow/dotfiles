@@ -33,6 +33,7 @@
         "network",
         "battery",
         "custom/notification",
+        "custom/keybinds",
         "custom/power"
     ],
 
@@ -203,6 +204,13 @@
         "on-click": "swaync-client -t -sw",
         "on-click-right": "swaync-client -d -sw",
         "escape": true
+    },
+
+    "custom/keybinds": {
+        "format": "󰌌",
+        "tooltip": true,
+        "tooltip-format": "Keyboard Shortcuts",
+        "on-click": "~/.config/waybar/scripts/keybinds-menu.py"
     },
 
     "custom/power": {

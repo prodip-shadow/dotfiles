@@ -168,7 +168,8 @@ window#waybar.empty #window {
 #bluetooth,
 #network,
 #battery,
-#custom-notification {
+#custom-notification,
+#custom-keybinds {
     color: @on_surface;
     padding: 4px 9px;
     margin: 2px 1px;
@@ -186,7 +187,8 @@ window#waybar.empty #window {
 #bluetooth:hover,
 #network:hover,
 #battery:hover,
-#custom-notification:hover {
+#custom-notification:hover,
+#custom-keybinds:hover {
     background-color: @surface_variant;
     color: @primary;
 }
