@@ -31,6 +31,7 @@
         "wireplumber",
         "bluetooth",
         "network",
+        "custom/caffeine",
         "battery",
         "custom/notification",
         "custom/keybinds",
@@ -170,6 +171,16 @@
         "on-click": "kill -USR2 $(cat /tmp/waybar-wifi-panel.pid 2>/dev/null) 2>/dev/null || ~/.config/waybar/scripts/wifi-menu.py",
         "on-click-right": "nm-connection-editor",
         "max-length": 14
+    },
+
+    "custom/caffeine": {
+        "format": "{}",
+        "return-type": "json",
+        "interval": 5,
+        "signal": 8,
+        "exec": "~/.config/waybar/scripts/caffeine.sh",
+        "on-click": "~/.config/waybar/scripts/caffeine.sh toggle",
+        "tooltip": true
     },
 
     "battery": {

@@ -167,6 +167,7 @@ window#waybar.empty #window {
 #wireplumber,
 #bluetooth,
 #network,
+#custom-caffeine,
 #battery,
 #custom-notification,
 #custom-keybinds {
@@ -186,6 +187,7 @@ window#waybar.empty #window {
 #wireplumber:hover,
 #bluetooth:hover,
 #network:hover,
+#custom-caffeine:hover,
 #battery:hover,
 #custom-notification:hover,
 #custom-keybinds:hover {
@@ -199,6 +201,14 @@ window#waybar.empty #window {
 
 #custom-notification.dnd-none,
 #custom-notification.dnd-notification {
+    color: @on_surface_variant;
+}
+
+#custom-caffeine.active {
+    color: @primary;
+}
+
+#custom-caffeine.inactive {
     color: @on_surface_variant;
 }
 
