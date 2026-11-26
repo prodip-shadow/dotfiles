@@ -4,6 +4,7 @@
 
 hl.env("HYPRCURSOR_THEME", "miku-cursor-linux")
 hl.env("HYPRCURSOR_SIZE", "24")
+hl.env("XCURSOR_THEME", "miku-cursor-linux")
 hl.env("XCURSOR_SIZE", "24")
 
 ---- Toolkit settings
