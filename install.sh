@@ -223,7 +223,7 @@ chmod +x "$BASE/matugen/"*.sh "$BASE/waybar/scripts/"*.py "$BASE/waybar/scripts/
 
 if [[ -f "$WP_DIR/wall.jpg" ]] && command -v matugen &> /dev/null; then
     sed -i "s|/home/[^/]*/Wallpapers|$HOME/Wallpapers|g" "$CFG_DIR/hypr/hyprpaper.conf" 2>/dev/null || true
-    if matugen -c "$CFG_DIR/matugen/config.toml" image "$WP_DIR/wall.jpg" -m dark --source-color-index 0; then
+    if matugen -c "$CFG_DIR/matugen/config.toml" image "$WP_DIR/wall.jpg" -t scheme-fidelity -m dark --source-color-index 0; then
         log_success "Matugen theme generated from wall.jpg."
     else
         log_warn "Matugen theme generation finished with warnings."

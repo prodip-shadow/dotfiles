@@ -1,9 +1,9 @@
-@define-color background #0e1416;
-@define-color background-sec #3f484a;
-@define-color text #dee3e5;
-@define-color background-alt alpha(#004e59, .4);
-@define-color selected #82d3e2;
-@define-color hover alpha(#82d3e2, .4);
+@define-color background #0c1609;
+@define-color background-sec #3c4b36;
+@define-color text #dae6d1;
+@define-color background-alt alpha(#15e703, .4);
+@define-color selected #80ff67;
+@define-color hover alpha(#80ff67, .4);
 @define-color urgent #ffb4ab;
 
 * {

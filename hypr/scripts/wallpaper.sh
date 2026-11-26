@@ -123,9 +123,16 @@ EOF
 # 2. Apply wallpaper cleanly (swaybg avoids hyprpaper EGL/GBM crashes in VMs)
 apply_wallpaper "$SELECTED"
 
-# 3. Generate full system theme (Waybar, Rofi, Ghostty, Kitty, Alacritty, Hyprland, SwayNC, GTK4, Wlogout, Hyprlock)
+# 3. Generate full system theme (use monochrome for gray/low-saturation wallpapers, fidelity for colorful ones)
 if command -v matugen >/dev/null 2>&1; then
-    matugen -c "${HOME}/.config/matugen/config.toml" image "$SELECTED" -m dark --source-color-index 0 >/dev/null 2>&1 || true
+    SCHEME="scheme-fidelity"
+    if command -v magick >/dev/null 2>&1; then
+        SAT=$(magick "$SELECTED" -resize 64x64 -colorspace HSL -channel G -separate +channel -format "%[fx:mean*100]" info: 2>/dev/null || echo "50")
+        if awk "BEGIN { exit !($SAT < 22) }"; then
+            SCHEME="scheme-monochrome"
+        fi
+    fi
+    matugen -c "${HOME}/.config/matugen/config.toml" image "$SELECTED" -t "$SCHEME" -m dark --source-color-index 0 >/dev/null 2>&1 || true
 fi
 
 notify-send "Wallpaper & Theme Updated" "$(basename "$SELECTED")" 2>/dev/null || true

@@ -12,7 +12,7 @@ hl.config({
 		border_size = 2,
 
 		col = {
-			active_border = colors.tertiary,
+			active_border = colors.primary,
 			inactive_border = colors.background,
 		},
 
