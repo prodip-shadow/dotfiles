@@ -1,6 +1,6 @@
 return {
-    background = "#14140c",
-    primary = "#c9cb78",
-    secondary = "#c9c8a5",
-    tertiary = "#a3d0be",
+    background = "#0e1416",
+    primary = "#82d3e2",
+    secondary = "#b1cbd1",
+    tertiary = "#bbc5eb",
 }

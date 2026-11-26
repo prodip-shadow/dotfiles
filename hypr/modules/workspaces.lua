@@ -2,10 +2,9 @@
 --- WINDOWS AND WORKSPACES ---
 ------------------------------
 
-for i = 1, 5 do
+for i = 1, 4 do
 	hl.workspace_rule({
 		workspace = i,
-		monitor = "eDP-1",
 		persistent = true,
 	})
 end

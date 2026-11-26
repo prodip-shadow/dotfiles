@@ -92,8 +92,11 @@ EOF
 
 # 2. Restart hyprpaper cleanly with the new config
 pkill -x hyprpaper 2>/dev/null || true
-sleep 0.15
-nohup hyprpaper >/dev/null 2>&1 &
+for _ in $(seq 1 20); do
+    pgrep -x hyprpaper >/dev/null 2>&1 || break
+    sleep 0.05
+done
+setsid -f hyprpaper >/dev/null 2>&1
 
 # 3. Generate full system theme (Waybar, Rofi, Ghostty, Kitty, Alacritty, Hyprland, SwayNC, GTK4, Wlogout, Hyprlock)
 if command -v matugen >/dev/null 2>&1; then

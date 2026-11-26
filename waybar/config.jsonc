@@ -50,6 +50,9 @@
     "hyprland/workspaces": {
         "disable-scroll": false,
         "all-outputs": true,
+        "persistent-workspaces": {
+            "*": 4
+        },
         "on-click": "activate",
         "format": "{id} {windows}",
         "format-window-separator": " ",
