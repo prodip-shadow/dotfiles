@@ -4,7 +4,7 @@
 
 terminal = "ghostty"
 fileManager = "thunar"
-menu = "~/.config/rofi/launchers/type-6/launcher.sh || pkill rofi"
+menu = "pkill -USR2 -f 'app-launcher.py --daemon' || ~/.config/waybar/scripts/app-launcher.py"
 editor = "code"
 editorAlt = "antigravity-ide"
 browser = "brave"

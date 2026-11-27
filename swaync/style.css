@@ -1,191 +1,181 @@
 @import "../waybar/colors.css";
 
-:root {
-    --cc-bg: alpha(@background, 0.95);
-    --noti-border-color: alpha(@primary, 0.35);
-    --noti-bg: 26, 18, 13;
-    --noti-bg-alpha: 0.92;
-    --noti-bg-darker: @background;
-    --noti-bg-hover: @surface_variant;
-    --noti-bg-focus: alpha(@surface_variant, 0.85);
-    --noti-close-bg: alpha(@surface_variant, 0.85);
-    --noti-close-bg-hover: @error;
-    --text-color: @on_surface;
-    --text-color-disabled: @on_surface_variant;
-    --bg-selected: @primary;
-    --border-radius: 14px;
-    --notification-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
-}
-
-@define-color cc-bg alpha(@background, 0.95);
-@define-color noti-border-color alpha(@primary, 0.35);
-@define-color noti-bg alpha(@surface_variant, 0.55);
-@define-color noti-bg-opaque @surface;
-@define-color noti-bg-darker @background;
-@define-color noti-bg-hover @surface_variant;
-@define-color noti-bg-hover-opaque @surface_variant;
-@define-color noti-close-bg alpha(@surface_variant, 0.85);
-@define-color noti-close-bg-hover @error;
-@define-color text-color @on_surface;
-@define-color text-color-disabled @on_surface_variant;
-@define-color bg-selected @primary;
-
 * {
-    font-family: "JetBrainsMono Nerd Font Propo", "FiraCode Nerd Font", sans-serif;
+    font-family: "Inter", "Noto Sans", "JetBrainsMono Nerd Font Propo", sans-serif;
     font-size: 13px;
 }
 
-.control-center {
-    background: alpha(@background, 0.95);
-    border: 1.5px solid alpha(@primary, 0.45);
-    border-radius: 16px;
-    padding: 12px;
-    color: @on_surface;
-    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.55);
-}
-
-.control-center-list {
+.blank-window {
     background: transparent;
 }
 
-.control-center-list-placeholder {
-    opacity: 0.5;
-    color: @on_surface_variant;
+/* ── Control Center (100% Solid, Clean Surface Hierarchy) ── */
+.control-center {
+    background-color: @background;
+    border: 1.5px solid @surface_variant;
+    border-radius: 16px;
+    padding: 14px;
+    color: @on_surface;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55);
 }
 
-/* Title & Clear All */
+.control-center-list {
+    background-color: transparent;
+}
+
+.control-center-list-placeholder {
+    color: @on_surface_variant;
+    padding: 28px 0;
+    font-size: 13px;
+}
+
+/* ── Header: Title + Clear All ── */
 .widget-title {
-    margin: 2px 4px 8px 4px;
+    margin: 0 2px 10px 2px;
 }
 
 .widget-title > label {
     font-size: 16px;
     font-weight: 700;
-    color: @primary;
+    color: @on_surface;
 }
 
 .widget-title > button {
-    background: alpha(@surface_variant, 0.7);
+    background-color: @surface;
     color: @on_surface;
+    border: 1px solid @surface_variant;
     border-radius: 8px;
-    padding: 4px 12px;
+    padding: 5px 12px;
     font-size: 12px;
     font-weight: 600;
-    border: 1px solid alpha(@primary, 0.25);
 }
 
 .widget-title > button:hover {
-    background: @error;
+    background-color: @error;
     color: @on_error;
     border-color: @error;
 }
 
-/* Do Not Disturb */
+/* ── Do Not Disturb ── */
 .widget-dnd {
-    background: alpha(@surface_variant, 0.38);
+    background-color: @surface;
+    border: 1px solid @surface_variant;
     border-radius: 12px;
-    padding: 8px 12px;
-    margin: 2px 4px 8px 4px;
+    padding: 9px 14px;
+    margin: 0 2px 10px 2px;
     color: @on_surface;
     font-weight: 600;
-    border: 1px solid alpha(@surface_variant, 0.6);
 }
 
 .widget-dnd > switch {
-    background: @surface_variant;
+    background-color: @surface_variant;
     border-radius: 999px;
-    min-width: 42px;
+    min-width: 44px;
     min-height: 22px;
 }
 
 .widget-dnd > switch:checked {
-    background: @primary;
+    background-color: @primary;
 }
 
 .widget-dnd > switch slider {
-    background: @on_surface;
+    background-color: @on_surface;
     border-radius: 999px;
     margin: 2px;
 }
 
-/* Quick Action Buttons */
+/* ── Quick Actions Grid ── */
 .widget-buttons-grid {
-    background: transparent;
-    padding: 2px;
-    margin: 2px 0 8px 0;
+    background-color: transparent;
+    padding: 0;
+    margin: 0 0 10px 0;
 }
 
 .widget-buttons-grid > flowbox > flowboxchild > button {
-    background: alpha(@surface_variant, 0.55);
+    background-color: @surface;
     color: @on_surface;
+    border: 1px solid @surface_variant;
     border-radius: 12px;
     padding: 10px 0;
     margin: 3px;
-    min-width: 50px;
+    min-width: 52px;
     font-size: 16px;
-    border: 1px solid alpha(@surface_variant, 0.8);
+    font-family: "JetBrainsMono Nerd Font Propo", sans-serif;
 }
 
 .widget-buttons-grid > flowbox > flowboxchild > button:hover {
-    background: @primary_container;
+    background-color: @primary_container;
     color: @on_primary_container;
     border-color: @primary;
 }
 
 .widget-buttons-grid > flowbox > flowboxchild > button.toggle:checked {
-    background: @error;
-    color: @on_error;
-    border-color: @error;
+    background-color: @primary;
+    color: @on_primary;
+    border-color: @primary;
 }
 
-/* Volume & Backlight Sliders */
+/* ── Volume & Backlight Sliders ── */
 .widget-volume,
 .widget-backlight {
-    background: alpha(@surface_variant, 0.38);
+    background-color: @surface;
+    border: 1px solid @surface_variant;
     border-radius: 12px;
-    padding: 8px 12px;
-    margin: 3px 4px;
+    padding: 8px 14px;
+    margin: 0 2px 8px 2px;
     color: @primary;
-    border: 1px solid alpha(@surface_variant, 0.6);
+}
+
+.widget-volume > box > label,
+.widget-backlight > box > label {
+    font-family: "JetBrainsMono Nerd Font Propo", sans-serif;
+    font-size: 16px;
+    margin-right: 10px;
 }
 
 .widget-volume scale trough,
 .widget-backlight scale trough {
-    background: alpha(@surface_variant, 0.85);
+    background-color: @surface_variant;
     border-radius: 999px;
     min-height: 6px;
 }
 
 .widget-volume scale highlight,
 .widget-backlight scale highlight {
-    background: @primary;
+    background-color: @primary;
     border-radius: 999px;
 }
 
 .widget-volume scale slider,
 .widget-backlight scale slider {
-    background: @on_primary_container;
+    background-color: @on_surface;
+    border: 2px solid @primary;
     border-radius: 999px;
     min-width: 14px;
     min-height: 14px;
 }
 
-/* MPRIS Media Widget */
+/* ── MPRIS Media Player ── */
 .widget-mpris {
-    background: alpha(@surface_variant, 0.45);
-    border-radius: 12px;
-    padding: 8px;
-    margin: 6px 4px;
-    border: 1px solid alpha(@primary, 0.25);
+    background-color: @surface;
+    border: 1px solid @surface_variant;
+    border-radius: 14px;
+    padding: 10px;
+    margin: 2px 2px 10px 2px;
 }
 
 .widget-mpris-player {
-    background: transparent;
-    padding: 4px;
+    background-color: transparent;
+    padding: 2px;
+}
+
+.widget-mpris-album-art {
+    border-radius: 10px;
 }
 
 .widget-mpris-title {
     font-weight: 700;
+    font-size: 13.5px;
     color: @on_surface;
 }
 
@@ -194,21 +184,69 @@
     color: @on_surface_variant;
 }
 
-/* Notification Cards */
+.widget-mpris button {
+    background-color: @surface_variant;
+    color: @on_surface;
+    border-radius: 8px;
+    padding: 4px 8px;
+    margin: 2px;
+}
+
+.widget-mpris button:hover {
+    background-color: @primary;
+    color: @on_primary;
+}
+
+picture.mpris-background {
+    opacity: 0;
+}
+
+/* ── Notification Cards (Solid, Non-Overlapping) ── */
 .notification-row {
     outline: none;
-    margin: 4px 2px;
+    margin: 0;
+    padding: 0;
 }
 
-.notification {
-    background: alpha(@surface_variant, 0.5);
-    border: 1px solid alpha(@primary, 0.25);
-    border-radius: 12px;
-    padding: 8px;
+.control-center .notification-row .notification-background {
+    background-color: @surface;
+    border: 1px solid @surface_variant;
+    border-radius: 14px;
+    margin: 5px 2px;
+    padding: 0;
 }
 
-.notification:hover {
-    border-color: alpha(@primary, 0.6);
+.floating-notifications .notification-row .notification-background {
+    background-color: @background;
+    border: 1.5px solid @primary;
+    border-radius: 14px;
+    margin: 8px 12px;
+    padding: 0;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.55);
+}
+
+.notification-row .notification-background .notification {
+    background-color: transparent;
+    border-radius: 14px;
+    padding: 10px 12px;
+}
+
+.notification-row .notification-background .notification.critical {
+    border: 1.5px solid @error;
+}
+
+.notification-row .notification-background:hover {
+    border-color: @primary;
+}
+
+.notification-content {
+    margin: 0;
+    padding: 0;
+}
+
+.image {
+    margin: 2px 12px 2px 0;
+    border-radius: 10px;
 }
 
 .summary {
@@ -217,12 +255,46 @@
     font-size: 13.5px;
 }
 
-.body {
-    color: @on_surface;
-    font-size: 12.5px;
-}
-
 .time {
     color: @on_surface_variant;
     font-size: 11px;
+    margin-left: 8px;
+}
+
+.body {
+    color: @on_surface;
+    font-size: 12.5px;
+    margin-top: 3px;
+}
+
+.close-button {
+    background-color: @surface_variant;
+    color: @on_surface;
+    border-radius: 999px;
+    min-width: 22px;
+    min-height: 22px;
+    margin: 2px;
+    padding: 0;
+}
+
+.close-button:hover {
+    background-color: @error;
+    color: @on_error;
+}
+
+.notification-action {
+    background-color: @surface_variant;
+    color: @on_surface;
+    border: 1px solid @surface_variant;
+    border-radius: 8px;
+    margin: 6px 4px 2px 4px;
+    padding: 5px 10px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.notification-action:hover {
+    background-color: @primary;
+    color: @on_primary;
+    border-color: @primary;
 }

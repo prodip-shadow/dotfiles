@@ -13,7 +13,10 @@ hl.bind(mainMod .. " + T", hl.dsp.window.float({ action = "toggle" }))
 hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen({ action = "toggle" }))
 -- hl.bind(mainMod .. " + space", hl.dsp.exec_cmd(menu .. " || pkill rofi"))
 hl.bind(mainMod .. " + space", hl.dsp.exec_cmd(menu))
-hl.bind(mainMod .. " + N", hl.dsp.exec_cmd("sh -c 'pgrep -x swaync >/dev/null || (swaync & sleep 0.3); swaync-client -t -sw'"))
+hl.bind(
+	mainMod .. " + N",
+	hl.dsp.exec_cmd("sh -c 'pgrep -x swaync >/dev/null || (swaync & sleep 0.3); swaync-client -t -sw'")
+)
 hl.bind(mainMod .. " + P", hl.dsp.window.pseudo())
 hl.bind(mainMod .. " + J", hl.dsp.layout("togglesplit"))
 hl.bind(mainMod .. " + SHIFT + R", hl.dsp.exec_cmd("pkill -x waybar; waybar"))

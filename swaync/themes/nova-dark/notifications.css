@@ -1,8 +1,8 @@
-@define-color background #101415;
-@define-color text #e0e3e4;
-@define-color background-alt #3e494b;
-@define-color selected #acccd3;
-@define-color hover #ffb77a;
+@define-color background #131313;
+@define-color text #e2e2e2;
+@define-color background-alt #474747;
+@define-color selected #c6c6c6;
+@define-color hover #e2e2e2;
 @define-color urgent #ffb4ab;
 
 * {
